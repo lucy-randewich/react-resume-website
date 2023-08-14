@@ -7,6 +7,7 @@ import Image4 from '../images/stor3.jpeg';
 import Image5 from '../images/skate.jpeg'; 
 import Image6 from '../images/grad.jpeg'; 
 import CV from '../resources/CV.pdf';
+import Typewriter from 'typewriter-effect';
 
 const useStyles = makeStyles((theme) => ({
   aboutPage: {
@@ -47,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: 'transparent',
     border: '2px solid pink',
     color: 'pink',
-    borderRadius: '10px',
+    borderRadius: '5px',
     padding: '8px 20px',
     fontSize: '1rem',
     cursor: 'pointer',
@@ -85,15 +86,22 @@ const AboutPage = ({ id }) => {
           />
         </div>
         <div className={classes.textContainer}>
+        <Typewriter
+          options={{
+            strings: ['Software Developer', 'Squashy Enthusiast', 'Research Associate', 'Computer Science Grad'],
+            autoStart: true,
+            loop: true,
+          }}
+        />
           <p className={classes.aboutText}>
-            Hi, I'm Lucy. I have a passion for designing and implementing solutions to complex software problems.
-            I was top in my year at the University of Bristol in Computer Science BSc, and also have a breadth of industry experience!
-            I love travelling, painting, and enjoying the sun. Feel free to check out my CV and contact me with inquiries.
+            I enjoy designing and implementing solutions to complex software problems.
+            I performed top in my year at the University of Bristol in Computer Science BSc,
+            and also have a breadth of industry experience.
+            I also love travelling and artwork. Feel free to check out my CV and contact me with inquiries!
           </p>
           <a href={CV} target="_blank" rel="noopener noreferrer" className={classes.cvButton}>
             View CV
           </a>
-
         </div>
       </div>
     </section>

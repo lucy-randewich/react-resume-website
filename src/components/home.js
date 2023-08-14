@@ -30,7 +30,7 @@ const HomePage = ({id}) => {
         <div style={cardStyle}>
           <img src={bigLogo} alt="Logo" style={logoStyle} /> 
           <p style={descriptionStyle}>
-            Hi! I'm Lucy. Have a scroll about to find out about me and what I can do for you. 
+            Hi! I'm Lucy. Have a scroll about to find out about me and what I can do for you!
           </p>
         </div>
       </div>
