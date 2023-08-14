@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@mui/styles';
-import Image from '../images/stor2.jpeg';
-import Button from '@mui/material/Button';
+import Image1 from '../images/stor2.jpeg';
+import Image2 from '../images/lakes.jpeg'; 
+import Image3 from '../images/gambas.jpeg'; 
+import Image4 from '../images/stor3.jpeg'; 
+import Image5 from '../images/skate.jpeg'; 
+import Image6 from '../images/grad.jpeg'; 
 import CV from '../resources/CV.pdf';
 
 const useStyles = makeStyles((theme) => ({
@@ -22,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
   photo: {
     height: '100%',
-    maxWidth: '60%',
+    maxWidth: '90%',
     objectFit: 'contain',
   },
   textContainer: {
@@ -31,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: '60px',
+    padding: '80px',
   },
   aboutText: {
     fontSize: '1.2rem',
@@ -57,12 +61,28 @@ const useStyles = makeStyles((theme) => ({
 
 const AboutPage = ({ id }) => {
   const classes = useStyles();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const images = [Image1, Image2, Image3, Image4, Image5, Image6];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 5000);
+
+    return () => {
+      clearInterval(timer); 
+    };
+  }, [images.length]);
 
   return (
     <section id={id} className="about">
       <div className={classes.aboutPage}>
         <div className={classes.photoContainer}>
-          <img src={Image} alt="About Me" className={classes.photo} />
+          <img
+            src={images[currentImageIndex]}
+            alt="About Me"
+            className={classes.photo}
+          />
         </div>
         <div className={classes.textContainer}>
           <p className={classes.aboutText}>
