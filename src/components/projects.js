@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import { makeStyles } from '@mui/styles';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import CornellBox from '../images/Cornell_box.png';
+import Cows from '../images/cows.png'
+import ARMessaging from '../images/armessaging.png'
+import ML from '../images/ML.png'
 
 const useStyles = makeStyles((theme) => ({
   projectsPage: {
@@ -32,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: '8px',
     margin: '10px',
     minWidth: '300px',
-    maxWidth: '400px',
+    maxWidth: '300px',
   },
   image: {
     width: '100%',
@@ -40,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: '10px',
   },
   title: {
-    fontSize: '1.5rem',
+    fontSize: '1.4rem',
     fontWeight: 'bold',
     marginBottom: '8px',
   },
@@ -71,27 +75,27 @@ const ProjectsPage = ({id}) => {
   const projects = [
     {
       id: 1,
-      title: 'Project 1',
-      image: 'image-url-1.jpg',
-      text: 'Description of project 1...',
+      title: 'Deep Learning',
+      image: Cows,
+      text: 'My BSc thesis, "Deep metric learning for the visual identification of cattle using depth imagery"',
     },
     {
       id: 2,
-      title: 'Project 2',
-      image: 'image-url-2.jpg',
-      text: 'Description of project 2...',
+      title: 'Ray Tracer',
+      image: CornellBox,
+      text: 'I developed a graphics renderer from first principles using C++.',
     },
     {
       id: 3,
-      title: 'Project 3',
-      image: 'image-url-2.jpg',
-      text: 'Description of project 2...',
+      title: 'ML Method Analysis',
+      image: ML,
+      text: 'A report outlining benefits and drawbacks of various common Machine Learning techniques.',
     },
     {
       id: 4,
-      title: 'Project 4',
-      image: 'image-url-2.jpg',
-      text: 'Description of project 2...',
+      title: 'IBM AR Messaging',
+      image: ARMessaging,
+      text: 'An Augmented Reality app with a novel method of messaging for IBM\'s academic initiative.',
     },
   ];
 
