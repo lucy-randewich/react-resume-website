@@ -3,8 +3,9 @@ import { AppBar, Toolbar, Button } from '@mui/material';
 import Logo from '../images/logo.png';
 import '../index.css';
 
-const Header = ({id}) => {
+const Header = ({ id }) => {
   const [scrolled, setScrolled] = useState(false);
+  const [hovered, setHovered] = useState(false);
 
   const handleScroll = () => {
     if (window.scrollY > 0) {
@@ -21,6 +22,14 @@ const Header = ({id}) => {
     };
   }, []);
 
+  const handleMouseEnter = () => {
+    setHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setHovered(false);
+  };
+
   const scrollToSection = (sectionId) => {
     const section = document.getElementById(sectionId);
     if (section) {
@@ -30,23 +39,26 @@ const Header = ({id}) => {
 
   return (
     <AppBar
-      position="fixed" elevation = {4}
+      position="fixed"
+      elevation={4}
       sx={{
         top: 0,
         height: scrolled ? '70px' : '80px',
-        backgroundColor: scrolled ? 'rgba(0, 0, 0, 0.6)' : 'rgba(0, 0, 0, 0.1)',
+        backgroundColor: hovered || scrolled ? 'rgba(0,0,0,0.6)' : 'rgba(0,0,0,0.1)',
         backdropFilter: 'blur(2px)',
-        transition: 'background-color 0.4s, height 0.4s',
+        transition: 'background-color 0.4s, height 0.5s',
       }}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
-    <Toolbar
+      <Toolbar
         sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            height: '100%',
-            alignItems: 'center',
+          display: 'flex',
+          justifyContent: 'space-between',
+          height: '100%',
+          alignItems: 'center',
         }}
-    >
+      >
     <div
         style={{
             position: 'relative',
