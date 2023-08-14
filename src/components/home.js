@@ -1,5 +1,6 @@
 import React from 'react';
-import bigLogo from '../images/biglogo.png';
+import bigLogo from '../images/biglogo3.png';
+import { ParallaxProvider } from 'react-scroll-parallax';
 
 const HomePage = ({id}) => {
   const homepageContainerStyle = {
@@ -26,6 +27,7 @@ const HomePage = ({id}) => {
 
   return (
     <section id={id} className="home">
+      <ParallaxProvider>
       <div style={homepageContainerStyle}>
         <div style={cardStyle}>
           <img src={bigLogo} alt="Logo" style={logoStyle} /> 
@@ -34,6 +36,7 @@ const HomePage = ({id}) => {
           </p>
         </div>
       </div>
+      </ParallaxProvider>
     </section>
   );
 };
