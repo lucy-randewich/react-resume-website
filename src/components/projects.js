@@ -3,7 +3,9 @@ import { makeStyles } from '@mui/styles';
 import CornellBox from '../images/Cornell_box.png';
 import Cows from '../images/cows.png';
 import ARMessaging from '../images/armessaging.png';
+import DND from '../images/dnd.png';
 import ML from '../images/ML.png';
+import ThesisPaper from '../resources/Thesis.pdf';
 
 const useStyles = makeStyles((theme) => ({
   projectsPage: {
@@ -58,6 +60,10 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
     borderRadius: '8px',
     zIndex: 1,
+    '& ul': {
+      textAlign: 'left',
+      paddingLeft: '20px', 
+    },
   },
   image: {
     width: '100%',
@@ -105,35 +111,53 @@ const ProjectsPage = ({ id }) => {
   const projects = [
     {
       id: 1,
-      title: 'Deep Learning',
+      title: 'Cow Identification',
       image: Cows,
       text: 'My BSc thesis, "Deep metric learning for the visual identification of cattle using depth imagery"',
+      longText: 'My BSc thesis was in the sphere of deep learning for agriculture, supervised by Dr. Tilo Burghardt. It achieved a high first-class of 77%, and is in the process of pubication. I created and optimised a deep neural network for the task of classifying individual cattle using depth imagery of their backs.',
+      skills: ['python', 'PyTorch', 'dataset curation', 'data preparation', 'network architecture creation', 'neural network optimisation'],
+      githubLink: 'https://github.com/lucy-randewich/cow-depth-identification.git',
+      paperLink: ThesisPaper,
     },
     {
       id: 2,
       title: 'Ray Tracer',
       image: CornellBox,
       text: 'I developed a graphics renderer from first principles using C++.',
+      longText: '',
+      skills: [],
+      githubLink: 'https://github.com/lucy-randewich/graphics',
     },
     {
       id: 3,
       title: 'ML Method Analysis',
       image: ML,
       text: 'A report outlining benefits and drawbacks of various common Machine Learning techniques.',
+      longText: '',
+      skills: [],
+      githubLink: 'https://github.com/lucy-randewich/ML_coursework',
     },
     {
       id: 4,
       title: 'IBM AR Messaging',
       image: ARMessaging,
       text: 'An Augmented Reality app with a novel method of messaging for IBM\'s academic initiative.',
+      longText: '',
+      skills: [],
+      githubLink: 'https://github.com/spe-uob/2021-ARMessaging',
     },
     {
       id: 5,
-      title: 'IBM AR Messaging',
-      image: ARMessaging,
-      text: 'An Augmented Reality app with a novel method of messaging for IBM\'s academic initiative.',
+      title: 'Decisions and Disruptions',
+      image: DND,
+      text: 'A game teaching cyber security for Bristol Cyber Security Group.',
+      longText: '',
+      skills: [],
+      githubLink: '',
     },
   ];
+
+  const selectedProject = projects[clickedIndex];
 
   return (
     <section id={id} className="projects">
@@ -154,9 +178,9 @@ const ProjectsPage = ({ id }) => {
                   clickedIndex === index
                     ? 'translateY(-10px)'
                     : hoveredIndex === index
-                    ? 'translateY(-10px)'
+                    ? 'translateY(-5px)'
                     : hoveredIndex !== null
-                    ? 'scale(0.96)'
+                    ? 'scale(0.985)'
                     : 'scale(1)',
                 opacity: hoveredIndex === null || hoveredIndex === index ? 1 : 0.7,
               }}
@@ -169,7 +193,20 @@ const ProjectsPage = ({ id }) => {
 
           {clickedIndex !== null && (
             <div className={classes.cardDetailInfo}>
-              here is some info
+              <h2>{selectedProject.title}</h2>
+              
+              <a href={selectedProject.githubLink} target="_blank" rel="noopener noreferrer">GitHub</a>
+              {projects[clickedIndex].paperLink && (
+                <a href={projects[clickedIndex].paperLink} target="_blank" rel="noopener noreferrer">Paper</a>
+              )}
+
+              <p>{selectedProject.longText}</p>
+              <h3>Skills:</h3>
+              <ul>
+                {selectedProject.skills.map((skill, index) => (
+                  <li key={index}>{skill}</li>
+                ))}
+              </ul>
               <div className={classes.closeButton} onClick={handleCloseClick}>X</div>
             </div>
           )}
