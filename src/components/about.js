@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    height: '100vh',
+    height: '150vh',
     width: '100vw',
   },
   photoContainer: {
@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     height: '70%',
   },
   photo: {
-    height: '100%',
+    height: '70vh',
     maxWidth: '90%',
     objectFit: 'contain',
   },

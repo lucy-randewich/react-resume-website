@@ -5,7 +5,8 @@ import HomePage from './components/home';
 import ProjectsPage from './components/projects';
 import AboutPage from './components/about';
 import Contact from './components/contact';
-import { Parallax, ParallaxProvider } from 'react-scroll-parallax';
+import Timeline from './components/timeline';
+import { Parallax } from 'react-scroll-parallax';
 
 function App() {
   return (
@@ -14,10 +15,11 @@ function App() {
       <div className="content">
         <div className="main">
           <HomePage id="home"/>
-            <Parallax translateY={[-10, 10]}>
+            <Parallax translateY={[-23, 25]}>
               <AboutPage id="about"/>
             </Parallax>
           <ProjectsPage id="projects"/>
+          <Timeline id="timeline"/>
         </div>
         <Contact id="contact"/>
       </div>

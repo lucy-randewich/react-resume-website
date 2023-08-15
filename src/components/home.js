@@ -10,7 +10,8 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    height: '100vh',
+    height: '170vh',
+    marginTop: '-30vh',
   },
   card: {
     textAlign: 'center',
@@ -67,14 +68,14 @@ const HomePage = ({ id }) => {
 
   const parallax2 = useParallax({
     easing: "easeOutQuad",
-    translateY: [0, 35],
+    translateY: [5, 40],
   });
   
   useEffect(() => {
     const iconContainer = document.getElementById('icon-container');
 
     if (iconContainer) {
-      const numIcons = 10;
+      const numIcons = 15;
 
       for (let i = 0; i < numIcons; i++) {
         const iconElement = document.createElement('div');
@@ -83,7 +84,7 @@ const HomePage = ({ id }) => {
         const rotation = Math.random() * 360;
         const positionX = Math.random() * 100;
         const positionY = Math.random() * 100;
-        const opacity = 0.3 + Math.random() * 0.5;
+        const opacity = 0.1 + Math.random() * 0.4;
 
         console.log(opacity);
 
@@ -110,7 +111,7 @@ const HomePage = ({ id }) => {
         const rotation = Math.random() * 360;
         const positionX = Math.random() * 100;
         const positionY = Math.random() * 100;
-        const opacity = 0.01 + Math.random() * 0.3;
+        const opacity = 0.01 + Math.random() * 0.2;
 
         iconElement.style.transform = `rotate(${rotation}deg)`;
         iconElement.style.left = `${positionX}%`;

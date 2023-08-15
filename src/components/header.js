@@ -43,8 +43,8 @@ const Header = ({ id }) => {
       elevation={4}
       sx={{
         top: 0,
-        height: scrolled ? '70px' : '80px',
-        backgroundColor: hovered || scrolled ? 'rgba(0,0,0,0.6)' : 'rgba(0,0,0,0.1)',
+        height: scrolled ? '60px' : '80px',
+        backgroundColor: hovered || scrolled ? 'rgba(0,0,0,0.45)' : 'rgba(0,0,0,0.1)',
         backdropFilter: 'blur(2px)',
         transition: 'background-color 0.4s, height 0.5s',
       }}
@@ -113,6 +113,19 @@ const Header = ({ id }) => {
           >
             Projects
           </Button>
+
+          <Button
+            color="inherit"
+            sx={{
+              '&:hover': {
+                color: 'pink',
+              },
+            }}
+            onClick={() => scrollToSection('timeline')}
+          >
+            Timeline
+          </Button>
+
           <Button
             color="inherit"
             sx={{
@@ -124,6 +137,7 @@ const Header = ({ id }) => {
           >
             Contact
           </Button>
+        
         </div>
       </Toolbar>
     </AppBar>
