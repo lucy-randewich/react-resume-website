@@ -97,7 +97,7 @@ const AboutPage = ({ id }) => {
             I enjoy designing and implementing solutions to complex software problems.
             I performed top in my year at the University of Bristol in Computer Science BSc,
             and also have a breadth of industry experience.
-            I also love travelling and artwork. Feel free to check out my CV and contact me with inquiries!
+            I also love travel and artwork :) Feel free to check out my CV and contact me!
           </p>
           <a href={CV} target="_blank" rel="noopener noreferrer" className={classes.cvButton}>
             View CV

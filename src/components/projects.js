@@ -1,7 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@mui/styles';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import CornellBox from '../images/Cornell_box.png';
 import Cows from '../images/cows.png'
 import ARMessaging from '../images/armessaging.png'
@@ -18,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    overflow: 'hidden',
   },
   sectionTitle: {
     fontSize: '1.6rem',
@@ -26,8 +25,10 @@ const useStyles = makeStyles((theme) => ({
   },
   cardContainer: {
     display: 'flex',
-    overflowX: 'hidden',
+    overflowX: 'scroll',
     scrollBehavior: 'smooth',
+    paddingLeft: '100px',
+    width: "100%",
   },
   card: {
     backgroundColor: '#fff',
@@ -60,17 +61,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ProjectsPage = ({id}) => {
+const ProjectsPage = ({ id }) => {
   const classes = useStyles();
-  const [scrollPosition, setScrollPosition] = useState(0);
-
-  const scrollLeft = () => {
-    setScrollPosition((prevPosition) => prevPosition - 400);
-  };
-
-  const scrollRight = () => {
-    setScrollPosition((prevPosition) => prevPosition + 400);
-  };
 
   const projects = [
     {
@@ -97,26 +89,28 @@ const ProjectsPage = ({id}) => {
       image: ARMessaging,
       text: 'An Augmented Reality app with a novel method of messaging for IBM\'s academic initiative.',
     },
+    {
+      id: 5,
+      title: 'IBM AR Messaging',
+      image: ARMessaging,
+      text: 'An Augmented Reality app with a novel method of messaging for IBM\'s academic initiative.',
+    },
   ];
 
   return (
     <section id={id} className="projects">
-    <div className={classes.projectsPage}>
-      <h3 className={classes.sectionTitle}>Examples of My Projects</h3>
-      <div className={classes.cardContainer} style={{ transform: `translateX(${scrollPosition}px)` }}>
-        {projects.map((project) => (
-          <div key={project.id} className={classes.card}>
-            <img src={project.image} alt={project.title} className={classes.image} />
-            <h2 className={classes.title}>{project.title}</h2>
-            <p className={classes.text}>{project.text}</p>
-          </div>
-        ))}
+      <div className={classes.projectsPage}>
+        <h3 className={classes.sectionTitle}>Examples of My Projects</h3>
+        <div className={classes.cardContainer}>
+          {projects.map((project) => (
+            <div key={project.id} className={classes.card}>
+              <img src={project.image} alt={project.title} className={classes.image} />
+              <h2 className={classes.title}>{project.title}</h2>
+              <p className={classes.text}>{project.text}</p>
+            </div>
+          ))}
+        </div>
       </div>
-      <div className={classes.scrollButton}>
-        <ChevronLeftIcon onClick={scrollLeft} />
-        <ChevronRightIcon onClick={scrollRight} />
-      </div>
-    </div>
     </section>
   );
 };
