@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@mui/styles';
 import CornellBox from '../images/Cornell_box.png';
-import Cows from '../images/cows.png'
-import ARMessaging from '../images/armessaging.png'
-import ML from '../images/ML.png'
+import Cows from '../images/cows.png';
+import ARMessaging from '../images/armessaging.png';
+import ML from '../images/ML.png';
 
 const useStyles = makeStyles((theme) => ({
   projectsPage: {
@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    height: '100vh',
+    height: '105vh',
     width: '100vw',
     display: 'flex',
     alignItems: 'center',
@@ -21,14 +21,17 @@ const useStyles = makeStyles((theme) => ({
   sectionTitle: {
     fontSize: '1.6rem',
     fontWeight: 'bold',
-    marginBottom: '30px',
+    marginBottom: '40px',
   },
   cardContainer: {
     display: 'flex',
     overflowX: 'scroll',
     scrollBehavior: 'smooth',
-    paddingLeft: '100px',
-    width: "100%",
+    marginLeft: '100px',
+    marginRight: '100px',
+    width: '86%',
+    marginBottom: '60px',
+    backgroundColor: 'linear-gradient(to left, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0))',
   },
   card: {
     backgroundColor: '#fff',
@@ -38,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
     margin: '10px',
     minWidth: '300px',
     maxWidth: '300px',
+    transition: 'transform 0.3s, opacity 0.3s',
   },
   image: {
     width: '100%',
@@ -63,6 +67,15 @@ const useStyles = makeStyles((theme) => ({
 
 const ProjectsPage = ({ id }) => {
   const classes = useStyles();
+  const [hoveredIndex, setHoveredIndex] = useState(null);
+
+  const handleMouseEnter = (index) => {
+    setHoveredIndex(index);
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredIndex(null);
+  };
 
   const projects = [
     {
@@ -102,8 +115,23 @@ const ProjectsPage = ({ id }) => {
       <div className={classes.projectsPage}>
         <h3 className={classes.sectionTitle}>Examples of My Projects</h3>
         <div className={classes.cardContainer}>
-          {projects.map((project) => (
-            <div key={project.id} className={classes.card}>
+        <div className={classes.overlay}></div>
+          {projects.map((project, index) => (
+            <div
+              key={index}
+              className={classes.card}
+              onMouseEnter={() => handleMouseEnter(index)}
+              onMouseLeave={handleMouseLeave}
+              style={{
+                transform:
+                  hoveredIndex === index
+                    ? 'translateY(-10px)'
+                    : hoveredIndex !== null
+                    ? 'scale(0.96)'
+                    : 'scale(1)',
+                opacity: hoveredIndex === null || hoveredIndex === index ? 1 : 0.7,
+              }}
+            >
               <img src={project.image} alt={project.title} className={classes.image} />
               <h2 className={classes.title}>{project.title}</h2>
               <p className={classes.text}>{project.text}</p>
