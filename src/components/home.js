@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@mui/styles';
-import { Parallax, ParallaxProvider } from 'react-scroll-parallax';
 import bigLogo from '../images/biglogo3.png';
 
 const useStyles = makeStyles((theme) => ({
@@ -41,8 +40,6 @@ const HomePage = ({ id }) => {
 
   return (
     <section id={id} className="home">
-      <ParallaxProvider scrollAxis="vertical">
-        <Parallax translateY={[-15, 15]}>
           <div className={classes.homepageContainer}>
             <div
               className={classes.card}
@@ -57,8 +54,6 @@ const HomePage = ({ id }) => {
               </p>
             </div>
           </div>
-        </Parallax>
-      </ParallaxProvider>
     </section>
   );
 };
