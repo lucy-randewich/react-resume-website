@@ -14,11 +14,9 @@ function App() {
       <div className="content">
         <div className="main">
           <HomePage id="home"/>
-          <ParallaxProvider scrollAxis="vertical">
-          <Parallax translateY={[-15, 15]}>
-          <AboutPage id="about"/>
-          </Parallax>
-          </ParallaxProvider>
+            <Parallax translateY={[-10, 10]}>
+              <AboutPage id="about"/>
+            </Parallax>
           <ProjectsPage id="projects"/>
         </div>
         <Contact id="contact"/>
