@@ -5,7 +5,10 @@ import Cows from '../images/cows.png';
 import ARMessaging from '../images/armessaging.png';
 import DND from '../images/dnd.png';
 import ML from '../images/ML.png';
+import roverRoasts from '../images/roverRoasts.png'
 import ThesisPaper from '../resources/Thesis.pdf';
+import MLPaper from '../resources/cw_xm20246.pdf';
+
 
 const useStyles = makeStyles((theme) => ({
   projectsPage: {
@@ -13,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    height: '105vh',
+    height: '110vh',
     width: '100vw',
     display: 'flex',
     alignItems: 'center',
@@ -123,9 +126,9 @@ const ProjectsPage = ({ id }) => {
       id: 2,
       title: 'Ray Tracer',
       image: CornellBox,
-      text: 'I developed a graphics renderer from first principles using C++.',
-      longText: '',
-      skills: [],
+      text: 'A graphics renderer developed from first principles using C++.',
+      longText: 'I created a rendering engine to create realistic images and animations from geometry data. Rather than using graphics APIs (such as OpenGL or DirectX), I researched the fundamental principles and practices underneath such libraries. I implemented three modes: wireframed, rasterised, and ray-traced, as well as exploring different approaches to lighting and shadows.',
+      skills: ['C++', 'linear algebra', 'coordinate geometry'],
       githubLink: 'https://github.com/lucy-randewich/graphics',
     },
     {
@@ -133,26 +136,37 @@ const ProjectsPage = ({ id }) => {
       title: 'ML Method Analysis',
       image: ML,
       text: 'A report outlining benefits and drawbacks of various common Machine Learning techniques.',
-      longText: '',
-      skills: [],
+      longText: 'This report was a final year university coursework, for which I was graded 80%. I used the California Housing and Fashion-MNIST datasets to assess the performance of various Machine Learning systems by implementing each and interpreting empirical results. Models included Kernel machines, Trees with Ensemble Methods, Hidden Markov Models, and more.',
+      skills: ['python', 'result analysis'],
       githubLink: 'https://github.com/lucy-randewich/ML_coursework',
+      paperLink: MLPaper,
     },
     {
       id: 4,
       title: 'IBM AR Messaging',
       image: ARMessaging,
       text: 'An Augmented Reality app with a novel method of messaging for IBM\'s academic initiative.',
-      longText: '',
-      skills: [],
+      longText: 'SkyWrite is an Android app where a sender can send a message to a postcode. The message will appear in augmented reality 100ft above the ground. The app sends notifications to users when a message exists in a nearby postcode to them.',
+      skills: ['Android development', 'Continuous Integration', 'Continuous Deployment', 'SpringBoot', 'IBMCloud', 'Kubernetes'],
       githubLink: 'https://github.com/spe-uob/2021-ARMessaging',
+      websiteLink: 'https://sky-write.github.io',
     },
     {
       id: 5,
       title: 'Decisions and Disruptions',
       image: DND,
-      text: 'A game teaching cyber security for Bristol Cyber Security Group.',
-      longText: '',
-      skills: [],
+      text: 'A game teaching security principles for Bristol Cyber Security Group.',
+      longText: 'I worked for the Bristol Cyber Security Group to create a game for teaching cyber security best practice with an emphasis on the consequences of insecure remote working. I created a back-end tool and GUI to be used in sessions facilitated by the Metropolitan police force.',
+      skills: ['Java', 'SwingUI'],
+      websiteLink: 'https://www.decisions-disruptions.org',
+    },
+    {
+      id: 6,
+      title: 'Web Development',
+      image: roverRoasts,
+      text: 'A collection of projects to practise designing and making websites.',
+      longText: 'I started out making a resume website in pure html/css/javascript. Then, I challenged myself to design and create a website in React in under two hours, with no prior experience of the framework. This was a lot of fun and after the challenge I created this website using React which is now my portfolio site.',
+      skills: ['React', 'JavaScript', 'Cloud hosting'],
       githubLink: '',
     },
   ];
@@ -195,9 +209,16 @@ const ProjectsPage = ({ id }) => {
             <div className={classes.cardDetailInfo}>
               <h2>{selectedProject.title}</h2>
               
+              {projects[clickedIndex].githubLink && (
               <a href={selectedProject.githubLink} target="_blank" rel="noopener noreferrer">GitHub</a>
+              )}
+              
               {projects[clickedIndex].paperLink && (
                 <a href={projects[clickedIndex].paperLink} target="_blank" rel="noopener noreferrer">Paper</a>
+              )}
+
+              {projects[clickedIndex].websiteLink && (
+                <a href={projects[clickedIndex].websiteLink} target="_blank" rel="noopener noreferrer">Website</a>
               )}
 
               <p>{selectedProject.longText}</p>

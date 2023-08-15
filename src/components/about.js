@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@mui/styles';
 import Image1 from '../images/stor2.jpeg';
 import Image2 from '../images/lakes.jpeg'; 
-import Image3 from '../images/gambas.jpeg'; 
 import Image4 from '../images/stor3.jpeg'; 
 import Image5 from '../images/skate.jpeg'; 
 import Image6 from '../images/grad.jpeg'; 
@@ -63,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
 const AboutPage = ({ id }) => {
   const classes = useStyles();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const images = [Image1, Image6, Image2, Image3, Image4, Image5];
+  const images = [Image6, Image1, Image2, Image4, Image5];
 
   useEffect(() => {
     const timer = setInterval(() => {
