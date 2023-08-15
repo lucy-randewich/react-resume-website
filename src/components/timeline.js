@@ -52,6 +52,7 @@ const useStyles = makeStyles((theme) => ({
 const Timeline = ({ id }) => {
     const classes = useStyles();
     const [animateLine, setAnimateLine] = useState(false);
+    const [animateCard, setAnimateCard] = useState(false);
   
     useEffect(() => {
       const handleScroll = () => {
@@ -62,6 +63,7 @@ const Timeline = ({ id }) => {
             setAnimateLine(true);
           } else {
             setAnimateLine(false);
+            setAnimateCard(false);
           }
         }
       };
@@ -73,6 +75,12 @@ const Timeline = ({ id }) => {
       };
     }, [id]);
   
+    const handleLineTransitionEnd = () => {
+      if (animateLine) {
+        setAnimateCard(true);
+      }
+    };
+  
     return (
       <section id={id} className={classes.timeline}>
         <h3 className={classes.title}>My Career Timeline</h3>
@@ -80,12 +88,13 @@ const Timeline = ({ id }) => {
           <div
             className={classes.verticalLine}
             style={{ height: animateLine ? '100%' : '0%' }}
+            onTransitionEnd={handleLineTransitionEnd}
           ></div>
           <div
             className={classes.timelineCard}
             style={{
-              opacity: animateLine ? 1 : 0,
-              transform: animateLine ? 'translateX(0)' : 'translateX(-20px)',
+              opacity: animateCard ? 1 : 0,
+              transform: animateCard ? 'translateX(0)' : 'translateX(-20px)',
             }}
           >
             <Paper elevation={3} className={classes.paper}>
@@ -101,3 +110,4 @@ const Timeline = ({ id }) => {
   };
   
   export default Timeline;
+  
