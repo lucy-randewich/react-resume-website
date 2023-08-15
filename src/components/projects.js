@@ -42,6 +42,22 @@ const useStyles = makeStyles((theme) => ({
     minWidth: '300px',
     maxWidth: '300px',
     transition: 'transform 0.3s, opacity 0.3s',
+    cursor: 'pointer',
+  },
+  cardDetailInfo: {
+    position: 'relative',
+    right: '0',
+    height: '90%',
+    width: '70%',
+    background: 'rgba(255, 255, 255, 0.95)',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: '20px',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+    borderRadius: '8px',
+    zIndex: 1,
   },
   image: {
     width: '100%',
@@ -56,11 +72,10 @@ const useStyles = makeStyles((theme) => ({
   text: {
     fontSize: '1rem',
   },
-  scrollButton: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: '20px',
+  closeButton: {
+    position: 'absolute',
+    top: '10px',
+    right: '10px',
     cursor: 'pointer',
   },
 }));
@@ -75,6 +90,16 @@ const ProjectsPage = ({ id }) => {
 
   const handleMouseLeave = () => {
     setHoveredIndex(null);
+  };
+
+  const [clickedIndex, setClickedIndex] = useState(null);
+
+  const handleCardClick = (index) => {
+    setClickedIndex(index);
+  };
+
+  const handleCloseClick = () => {
+    setClickedIndex(null);
   };
 
   const projects = [
@@ -115,16 +140,20 @@ const ProjectsPage = ({ id }) => {
       <div className={classes.projectsPage}>
         <h3 className={classes.sectionTitle}>Examples of My Projects</h3>
         <div className={classes.cardContainer}>
-        <div className={classes.overlay}></div>
+
           {projects.map((project, index) => (
             <div
               key={index}
               className={classes.card}
               onMouseEnter={() => handleMouseEnter(index)}
               onMouseLeave={handleMouseLeave}
+              onClick={() => handleCardClick(index)}
               style={{
+                display: clickedIndex === null || clickedIndex === index ? 'block' : 'none',
                 transform:
-                  hoveredIndex === index
+                  clickedIndex === index
+                    ? 'translateY(-10px)'
+                    : hoveredIndex === index
                     ? 'translateY(-10px)'
                     : hoveredIndex !== null
                     ? 'scale(0.96)'
@@ -137,6 +166,14 @@ const ProjectsPage = ({ id }) => {
               <p className={classes.text}>{project.text}</p>
             </div>
           ))}
+
+          {clickedIndex !== null && (
+            <div className={classes.cardDetailInfo}>
+              here is some info
+              <div className={classes.closeButton} onClick={handleCloseClick}>X</div>
+            </div>
+          )}
+
         </div>
       </div>
     </section>
