@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { makeStyles } from '@mui/styles';
 import bigLogo from '../images/biglogo3.png';
-import icon from '../images/icon.png';
-import { Parallax, useParallax } from 'react-scroll-parallax';
+import icon from '../images/bubble2.png';
+import { useParallax } from 'react-scroll-parallax';
 
 const useStyles = makeStyles((theme) => ({
   homepageContainer: {
@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
     height: '170vh',
-    marginTop: '-30vh',
+    marginTop: '-33vh',
   },
   card: {
     textAlign: 'center',
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     '&:hover .logo': {
       animation: '$bounce 0.5s infinite',
     },
-    backgroundColor: 'rgba(242, 242, 242, 0.88)',
+    backgroundColor: 'rgba(242, 242, 242, 0.55)',
     zIndex: 2,
     borderRadius: '20px',
   },
@@ -47,8 +47,8 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: '250px',
   },
   icon: {
-    width: '35px',
-    height: '33px',
+    width: '70px',
+    height: '70px',
     position: 'absolute',
     opacity: 0.1,
     backgroundImage: `url(${icon})`,
@@ -75,7 +75,7 @@ const HomePage = ({ id }) => {
     const iconContainer = document.getElementById('icon-container');
 
     if (iconContainer) {
-      const numIcons = 15;
+      const numIcons = 14;
 
       for (let i = 0; i < numIcons; i++) {
         const iconElement = document.createElement('div');
@@ -84,7 +84,8 @@ const HomePage = ({ id }) => {
         const rotation = Math.random() * 360;
         const positionX = Math.random() * 100;
         const positionY = Math.random() * 100;
-        const opacity = 0.1 + Math.random() * 0.4;
+        const opacity = 0.3 + Math.random() * 0.8;
+        const size = 20 + Math.random() * 70;
 
         console.log(opacity);
 
@@ -92,6 +93,8 @@ const HomePage = ({ id }) => {
         iconElement.style.left = `${positionX}%`;
         iconElement.style.top = `${positionY}%`;
         iconElement.style.opacity = `${opacity}`;
+        iconElement.style.width = `${size}px`;
+        iconElement.style.height = `${size}px`;
 
         iconContainer.appendChild(iconElement);
       }
@@ -102,7 +105,7 @@ const HomePage = ({ id }) => {
     const iconContainer = document.getElementById('icon-container2');
 
     if (iconContainer) {
-      const numIcons = 19;
+      const numIcons = 25;
 
       for (let i = 0; i < numIcons; i++) {
         const iconElement = document.createElement('div');
@@ -111,12 +114,15 @@ const HomePage = ({ id }) => {
         const rotation = Math.random() * 360;
         const positionX = Math.random() * 100;
         const positionY = Math.random() * 100;
-        const opacity = 0.01 + Math.random() * 0.2;
+        const opacity = 0.01 + Math.random() * 0.3;
+        const size = Math.random() * 70;
 
         iconElement.style.transform = `rotate(${rotation}deg)`;
         iconElement.style.left = `${positionX}%`;
         iconElement.style.top = `${positionY}%`;
         iconElement.style.opacity = `${opacity}`;
+        iconElement.style.width = `${size}px`;
+        iconElement.style.height = `${size}px`;
 
         iconContainer.appendChild(iconElement);
       }
