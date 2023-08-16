@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@mui/styles';
 import bigLogo from '../images/biglogo3.png';
 import icon from '../images/bubble2.png';
@@ -6,45 +6,34 @@ import { useParallax } from 'react-scroll-parallax';
 
 const useStyles = makeStyles((theme) => ({
   homepageContainer: {
-    backgroundColor: 'rgba(242, 242, 242, 1)',
+    backgroundColor: 'rgba(235, 235, 235, 1)',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    height: '170vh',
-    marginTop: '-33vh',
+    height: '160vh',
+    marginTop: '-20vh',
+    overflowY: 'hidden',
   },
   card: {
     textAlign: 'center',
     width: '60%',
-    '&:hover .logo': {
-      animation: '$bounce 0.5s infinite',
-    },
-    backgroundColor: 'rgba(242, 242, 242, 0.55)',
+    backgroundColor: 'rgba(235, 235, 235, 0.55)',
     zIndex: 2,
     borderRadius: '20px',
   },
   logo: {
-    maxWidth: '70%',
-    marginBottom: '8px',
-    animation: '$bounce 1s',
+    maxWidth: '90%',
   },
   description: {
     fontSize: '1.2rem',
   },
-  '@keyframes bounce': {
-    '0%, 100%': {
-      transform: 'translateY(0) scale(1)',
-    },
-    '50%': {
-      transform: 'translateY(-12px) scale(1.1)',
-    },
-  },
-
   iconContainer: {
     position: 'absolute',
-    width: '69%',
-    height: '52%',
-    marginBottom: '250px',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '90%',
+    height: '95%',
+    marginTop: '-90vh',
   },
   icon: {
     width: '70px',
@@ -61,21 +50,15 @@ const useStyles = makeStyles((theme) => ({
 const HomePage = ({ id }) => {
   const classes = useStyles();
 
-  const parallax1 = useParallax({
-    easing: "easeOutQuad",
-    translateY: [70, 5],
+  const parallax2 = useParallax({
+    translateY: [400, 0],
   });
 
-  const parallax2 = useParallax({
-    easing: "easeOutQuad",
-    translateY: [5, 40],
-  });
-  
   useEffect(() => {
     const iconContainer = document.getElementById('icon-container');
 
     if (iconContainer) {
-      const numIcons = 14;
+      const numIcons = 10;
 
       for (let i = 0; i < numIcons; i++) {
         const iconElement = document.createElement('div');
@@ -84,10 +67,8 @@ const HomePage = ({ id }) => {
         const rotation = Math.random() * 360;
         const positionX = Math.random() * 100;
         const positionY = Math.random() * 100;
-        const opacity = 0.3 + Math.random() * 0.8;
-        const size = 20 + Math.random() * 70;
-
-        console.log(opacity);
+        const opacity = 0.2 + Math.random() * 0.8;
+        const size = 20 + Math.random() * 80;
 
         iconElement.style.transform = `rotate(${rotation}deg)`;
         iconElement.style.left = `${positionX}%`;
@@ -100,53 +81,63 @@ const HomePage = ({ id }) => {
       }
     }
   }, [classes.icon]);
+
+  const handleScroll = () => {
+    setScrollPosition(window.scrollY);
+  };
 
   useEffect(() => {
-    const iconContainer = document.getElementById('icon-container2');
+    window.addEventListener('scroll', handleScroll);
 
-    if (iconContainer) {
-      const numIcons = 25;
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
-      for (let i = 0; i < numIcons; i++) {
-        const iconElement = document.createElement('div');
-        iconElement.classList.add(classes.icon);
+  const [showDescription, setShowDescription] = useState(false);
+  const [hideDescription, setHideDescription] = useState(false);
+  const [scrollPosition, setScrollPosition] = useState(0);
 
-        const rotation = Math.random() * 360;
-        const positionX = Math.random() * 100;
-        const positionY = Math.random() * 100;
-        const opacity = 0.01 + Math.random() * 0.3;
-        const size = Math.random() * 70;
+  useEffect(() => {
+    const cardElement = document.getElementById('card');
 
-        iconElement.style.transform = `rotate(${rotation}deg)`;
-        iconElement.style.left = `${positionX}%`;
-        iconElement.style.top = `${positionY}%`;
-        iconElement.style.opacity = `${opacity}`;
-        iconElement.style.width = `${size}px`;
-        iconElement.style.height = `${size}px`;
+    if (cardElement) {
+      const cardOffsetTop = cardElement.offsetTop;
+      const cardHeight = cardElement.clientHeight;
 
-        iconContainer.appendChild(iconElement);
+      if (scrollPosition >= cardOffsetTop - cardHeight && scrollPosition <= cardOffsetTop) {
+        setShowDescription(true);
+      } else if (scrollPosition < cardOffsetTop - cardHeight) {
+        setShowDescription(false);
       }
     }
-  }, [classes.icon]);
+  }, [scrollPosition]);
+
+  const logoStyle = {
+    opacity: showDescription ? 0 : 1,
+    transform: showDescription ? 'translateY(-60px)' : 'none',
+    transition: 'opacity 0.5s, transform 0.5s',
+  };
+
+  const descriptionStyle = {
+    fontSize: '1.2rem',
+    opacity: showDescription ? 1 : 0,
+    transform: showDescription ? 'none' : 'translateY(150px)',
+    transition: 'opacity 0.5s ease, transform 0.5s',
+  };
 
   return (
     <section id={id} className="home">
-          <div className={classes.homepageContainer}>
-          <div className={classes.iconContainer} id="icon-container2" ref={parallax2.ref}/>
-          <div className={classes.iconContainer} id="icon-container" ref={parallax1.ref}/>
-          
+      <div className={classes.homepageContainer}>
+        <div className={classes.iconContainer} id="icon-container" ref={parallax2.ref} />
 
-            <div className={classes.card} >
-              <img
-                src={bigLogo}
-                alt="Logo"
-                className={classes.logo}
-              />
-              <p className={classes.description}>
-                Hi! I'm Lucy. Have a scroll about to find out about me and what I can do for you!
-              </p>
-            </div>
-          </div>
+        <div className={classes.card} id="card">
+          <img src={bigLogo} alt="Logo" className={classes.logo} style={logoStyle}/>
+          <p className={classes.description} style={descriptionStyle}>
+            Hi! I'm Lucy. Have a scroll to learn about me and what I can do for you!
+          </p>
+        </div>
+      </div>
     </section>
   );
 };
