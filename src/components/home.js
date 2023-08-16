@@ -3,6 +3,7 @@ import { makeStyles } from '@mui/styles';
 import bigLogo from '../images/biglogo3.png';
 import icon from '../images/bubble2.png';
 import { useParallax } from 'react-scroll-parallax';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 const useStyles = makeStyles((theme) => ({
   homepageContainer: {
@@ -82,6 +83,9 @@ const HomePage = ({ id }) => {
     }
   }, [classes.icon]);
 
+
+  const [showArrow, setShowArrow] = useState(true);
+
   const handleScroll = () => {
     setScrollPosition(window.scrollY);
   };
@@ -106,8 +110,10 @@ const HomePage = ({ id }) => {
 
       if (scrollPosition >= cardOffsetTop - cardHeight && scrollPosition <= cardOffsetTop) {
         setShowDescription(true);
+        setShowArrow(false);
       } else if (scrollPosition < cardOffsetTop - cardHeight) {
         setShowDescription(false);
+        setShowArrow(true);
       }
     }
   }, [scrollPosition]);
@@ -125,6 +131,16 @@ const HomePage = ({ id }) => {
     transition: 'opacity 0.5s ease, transform 0.5s',
   };
 
+  const arrowStyle = {
+    opacity: showArrow ? 0.5 : 0,
+    transform: showArrow ? 'none' : 'translateY(-60px)',
+    transition: 'opacity 0.1s, transform 0.5s',
+    position: 'absolute',
+    bottom: '120px', 
+    left: '50%',
+    transform: 'translateX(-50%)', 
+  };
+  
   return (
     <section id={id} className="home">
       <div className={classes.homepageContainer}>
@@ -136,7 +152,11 @@ const HomePage = ({ id }) => {
             Hi! I'm Lucy. Have a scroll to learn about me and what I can do for you!
           </p>
         </div>
+
+        <ArrowDropDownIcon className={classes.arrow} style={arrowStyle}></ArrowDropDownIcon>
+
       </div>
+      
     </section>
   );
 };
