@@ -20,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
+    overflowX: 'scroll',
   },
   yearContainer: {
     padding: '30px',
@@ -41,33 +42,70 @@ const useStyles = makeStyles((theme) => ({
     transform: 'translateX(-50%)',
   },
   timelineCard: {
-    maxWidth: '300px',
+    maxWidth: '350px',
     opacity: 0,
     transform: 'translateX(-20px)',
     transition: 'opacity 0.5s, transform 0.5s',
+    marginTop: '10px',
+    marginLeft: '10px',
   },
 }));
 
 const timelineData = [
   {
     year: 2020,
-    title: 'Job Title 2020',
-    description: 'Job description and details...',
+    events: [
+      {
+        title: 'Ambassador',
+        company: 'Instagram UK',
+        description: 'Provided feedback and suggestions on new features to the Instagram app before launch.',
+      },
+      {
+        title: 'A-Levels',
+        company: 'The Abbey School',
+        description: 'Maths (A*), Computer Science (A*), Physics (A)',
+      },
+    ],
   },
   {
     year: 2021,
-    title: 'Job Title 2021',
-    description: 'Job description and details...',
+    events: [
+      {
+        title: 'Commissioned Artwork',
+        company: 'Freelance',
+        description: 'I have sold both prints and originals of my art, which is mostly oil on canvas.',
+      },
+    ],
   },
   {
     year: 2022,
-    title: 'Job Title 2022',
-    description: 'Job description and details...',
+    events: [
+      {
+        title: 'MLOps Intern',
+        company: 'Oxford Nanopore Technologies',
+        description: 'Optimised neural network models and created pipeline automation scripting tools.',
+      },
+      {
+        title: 'Teaching Assistant',
+        company: 'University of Bristol',
+        description: 'I was hired to teach the second year modules "Computer Systems B", and "Software Product Engineering"',
+      },
+    ],
   },
   {
     year: 2023,
-    title: 'Graduation!',
-    description: 'In July, I graduated with a high first-class in computer science BSc.',
+    events: [
+      {
+        title: 'Graduation!',
+        company: 'University of Bristol',
+        description: 'In July, I graduated with a high first-class in computer science BSc.',
+      },
+      {
+        title: 'Research Associate',
+        company: 'Bristol Cyber Security Group',
+        description: 'I work as a full-stack dev in the creation of tools for teaching security practises.',
+      },
+    ],
   },
 ];
 
@@ -107,33 +145,39 @@ const Timeline = ({ id }) => {
     <section id={id} className={classes.timeline}>
       <h3 className={classes.title}>My Career Timeline</h3>
       <div className={classes.timelineContainer}>
-        {timelineData.map((event, index) => (
-            <div className={classes.yearContainer} key={event.year}>
-                <div className={classes.lineContainer} style={{
-                    height: animateLines ? '80%' : '0%',
-                }}
-                onTransitionEnd={handleLineTransitionEnd}>
-
-                <span className={classes.yearLabel}>{event.year}</span>
-                </div>
-
-                <div
-                    className={classes.timelineCard}
-                    style={{
-                    opacity: animateCards ? 1 : 0,
-                    transform: animateCards ? 'translateX(0)' : 'translateX(-20px)',
-                    marginTop: '10px',
-                    marginLeft: '10px',
-                    }}
-                >
-                    <Paper elevation={3} className={classes.paper} style={{padding: '12px',}}>
-                    <div>
-                        <h4>{event.title}</h4>
-                        <p style={{fontSize:'10px'}}>{event.description}</p>
-                    </div>
-                    </Paper>
-                </div>
+        {timelineData.map((year, index) => (
+          <div className={classes.yearContainer} key={year.year}>
+            <div
+              className={classes.lineContainer}
+              style={{
+                height: animateLines ? '90%' : '0%',
+              }}
+              onTransitionEnd={handleLineTransitionEnd}
+            >
+              <span className={classes.yearLabel}>{year.year}</span>
             </div>
+
+            <div className={classes.cardsContainer} style={{display: 'flex',flexDirection: 'column',}}>
+                {year.events.map((event, eventIndex) => (
+                    <div
+                        className={classes.timelineCard}
+                        style={{
+                        opacity: animateCards ? 1 : 0,
+                        transform: animateCards ? 'translateX(0)' : 'translateX(-20px)',
+                        }}
+                        key={eventIndex}
+                    >
+                        <Paper elevation={3} className={classes.paper} style={{ padding: '7px' }}>
+                            <div style={{}}>
+                                <h4 style={{ margin: '2px', fontSize: '17px'}}>{event.title}</h4>
+                                <h5 style={{ margin: '0', fontSize: '14px' }}>{event.company}</h5>
+                                <p style={{ fontSize: '12px', margin: '10px' }}>{event.description}</p>
+                            </div>
+                        </Paper>
+                    </div>
+                ))}
+            </div>
+          </div>
         ))}
       </div>
     </section>
