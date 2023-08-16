@@ -8,10 +8,22 @@ import Contact from './components/contact';
 import Timeline from './components/timeline';
 import { Parallax } from 'react-scroll-parallax';
 
+import { createTheme, ThemeProvider } from '@mui/material';
+const fontUrl = './resources/RetrokiaCapsRounded.ttf';
+
+const theme = createTheme({
+  typography: {
+    fontFamily: "retrokia",
+    src: `url(${fontUrl}) format('truetype')`,
+  },
+});
+
 function App() {
   return (
     <div className="App">
-      <Header />
+      <ThemeProvider theme={theme}>
+        <Header />
+      </ThemeProvider>
       <div className="content">
         <div className="main">
           <HomePage id="home"/>
