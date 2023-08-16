@@ -6,7 +6,7 @@ import { useParallax } from 'react-scroll-parallax';
 
 const useStyles = makeStyles((theme) => ({
   homepageContainer: {
-    backgroundColor: 'rgba(235, 235, 235, 1)',
+    backgroundColor: 'rgba(215, 213, 210, 1)',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   card: {
     textAlign: 'center',
     width: '60%',
-    backgroundColor: 'rgba(235, 235, 235, 0.55)',
+    backgroundColor: 'rgba(215, 213, 210, 0.55)',
     zIndex: 2,
     borderRadius: '20px',
   },
