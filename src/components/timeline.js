@@ -20,36 +20,31 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    position: 'relative',
   },
-  verticalLine: {
-    position: 'absolute',
-    top: 0,
+  yearContainer: {
+    padding: '30px',
+    height: '60vh',
+    display: 'flex',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+  },
+  lineContainer: {
     width: '2px',
-    background: '#000',
-    transition: 'height 2s ease',
+    backgroundColor: '#000',
+    transition: 'height 1.5s ease',
+    position: 'relative',
   },
   yearLabel: {
     position: 'absolute',
-    top: '100%',
-    left: '-20px',
+    bottom: '-25px',
+    left: '50%',
+    transform: 'translateX(-50%)',
   },
   timelineCard: {
-    marginLeft: '24px',
-    marginTop: '10px',
-    maxWidth: '250px',
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    marginBottom: '20px',
+    maxWidth: '300px',
     opacity: 0,
     transform: 'translateX(-20px)',
-    transition: 'opacity 1.6s, transform 0.6s',
-  },
-  paper: {
-    padding: '16px',
-  },
-  icon: {
-    marginBottom: '10px',
+    transition: 'opacity 0.5s, transform 0.5s',
   },
 }));
 
@@ -71,16 +66,15 @@ const timelineData = [
   },
   {
     year: 2023,
-    title: 'Job Title 2023',
-    description: 'Job description and details...',
+    title: 'Graduation!',
+    description: 'In July, I graduated with a high first-class in computer science BSc.',
   },
 ];
 
 const Timeline = ({ id }) => {
   const classes = useStyles();
-  const [animateLine, setAnimateLine] = useState(false);
-  const [animateCard, setAnimateCard] = useState(false);
-  const [currentYearIndex, setCurrentYearIndex] = useState(0);
+  const [animateLines, setAnimateLines] = useState(false);
+  const [animateCards, setAnimateCards] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -88,11 +82,10 @@ const Timeline = ({ id }) => {
       if (timelineSection) {
         const rect = timelineSection.getBoundingClientRect();
         if (rect.top < window.innerHeight && rect.bottom >= 0) {
-          setAnimateLine(true);
+          setAnimateLines(true);
         } else {
-          setAnimateLine(false);
-          setAnimateCard(false);
-          setCurrentYearIndex(0);
+          setAnimateLines(false);
+          setAnimateCards(false);
         }
       }
     };
@@ -105,8 +98,8 @@ const Timeline = ({ id }) => {
   }, [id]);
 
   const handleLineTransitionEnd = () => {
-    if (animateLine) {
-      setAnimateCard(true);
+    if (animateLines) {
+      setAnimateCards(true);
     }
   };
 
@@ -115,32 +108,32 @@ const Timeline = ({ id }) => {
       <h3 className={classes.title}>My Career Timeline</h3>
       <div className={classes.timelineContainer}>
         {timelineData.map((event, index) => (
-          <React.Fragment key={event.year}>
-            <div
-              className={classes.verticalLine}
-              style={{
-                height: animateLine ? '100%' : '0%',
-                left: `${index * 280}px`,
-              }}
-              onTransitionEnd={handleLineTransitionEnd}
-            >
-                <span className={classes.yearLabel}>{event.year}</span>
-            </div>
-              <div
-                className={classes.timelineCard}
-                style={{
-                  opacity: animateCard ? 1 : 0,
-                  transform: animateCard ? 'translateX(0)' : 'translateX(-20px)',
+            <div className={classes.yearContainer} key={event.year}>
+                <div className={classes.lineContainer} style={{
+                    height: animateLines ? '80%' : '0%',
                 }}
-              >
-                <Paper elevation={3} className={classes.paper}>
-                  <div>
-                    <h4>{event.title}</h4>
-                    <p>{event.description}</p>
-                  </div>
-                </Paper>
-              </div>
-          </React.Fragment>
+                onTransitionEnd={handleLineTransitionEnd}>
+
+                <span className={classes.yearLabel}>{event.year}</span>
+                </div>
+
+                <div
+                    className={classes.timelineCard}
+                    style={{
+                    opacity: animateCards ? 1 : 0,
+                    transform: animateCards ? 'translateX(0)' : 'translateX(-20px)',
+                    marginTop: '10px',
+                    marginLeft: '10px',
+                    }}
+                >
+                    <Paper elevation={3} className={classes.paper} style={{padding: '12px',}}>
+                    <div>
+                        <h4>{event.title}</h4>
+                        <p style={{fontSize:'10px'}}>{event.description}</p>
+                    </div>
+                    </Paper>
+                </div>
+            </div>
         ))}
       </div>
     </section>
