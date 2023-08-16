@@ -58,7 +58,7 @@ const HomePage = ({ id }) => {
     const iconContainer = document.getElementById('icon-container');
 
     if (iconContainer) {
-      const numIcons = 15;
+      const numIcons = 10;
 
       for (let i = 0; i < numIcons; i++) {
         const iconElement = document.createElement('div');

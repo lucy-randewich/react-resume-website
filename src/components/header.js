@@ -43,7 +43,7 @@ const Header = ({ id }) => {
       elevation={4}
       sx={{
         top: 0,
-        height: scrolled ? '60px' : '80px',
+        height: scrolled ? hovered ? '80px' : '0px' : '80px',
         backgroundColor: hovered || scrolled ? 'rgba(0,0,0,0.45)' : 'rgba(0,0,0,0.1)',
         backdropFilter: 'blur(2px)',
         transition: 'background-color 0.4s, height 0.5s',
