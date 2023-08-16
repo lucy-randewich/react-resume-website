@@ -84,10 +84,16 @@ const HomePage = ({ id }) => {
   }, [classes.icon]);
 
 
-  const [showArrow, setShowArrow] = useState(true);
+  const [scrolled, setScrolled] = useState(false);
 
   const handleScroll = () => {
     setScrollPosition(window.scrollY);
+
+    if (window.scrollY > 0) {
+      setScrolled(true);
+    } else {
+      setScrolled(false);
+    }
   };
 
   useEffect(() => {
@@ -110,10 +116,8 @@ const HomePage = ({ id }) => {
 
       if (scrollPosition >= cardOffsetTop - cardHeight && scrollPosition <= cardOffsetTop) {
         setShowDescription(true);
-        setShowArrow(false);
       } else if (scrollPosition < cardOffsetTop - cardHeight) {
         setShowDescription(false);
-        setShowArrow(true);
       }
     }
   }, [scrollPosition]);
@@ -132,11 +136,11 @@ const HomePage = ({ id }) => {
   };
 
   const arrowStyle = {
-    opacity: showArrow ? 0.5 : 0,
-    transform: showArrow ? 'none' : 'translateY(-60px)',
-    transition: 'opacity 0.1s, transform 0.5s',
+    opacity: !scrolled ? 0.5 : 0,
+    transform: !scrolled ? 'none' : 'translateY(-60px)',
+    transition: 'opacity 0.5s, transform 0.5s',
     position: 'absolute',
-    bottom: '120px', 
+    bottom: '150px', 
     left: '50%',
     transform: 'translateX(-50%)', 
   };
