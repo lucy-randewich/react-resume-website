@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@mui/styles';
-import { GitHub, LinkedIn, Twitter } from '@mui/icons-material';
+import { GitHub, LinkedIn, Mail, Instagram } from '@mui/icons-material';
 
 const useStyles = makeStyles((theme) => ({
   footer: {
@@ -29,8 +29,11 @@ const Contact = ({id}) => {
         <a href="https://www.linkedin.com/in/lucyrandewich" className={classes.icon}>
             <LinkedIn />
         </a>
-        <a href="https://twitter.com/yourusername" className={classes.icon}>
-            <Twitter />
+        <a href="mailto:lrandewich@hotmail.co.uk" className={classes.icon}>
+            <Mail />
+        </a>
+        <a href="https://www.instagram.com/laurcty/" className={classes.icon}>
+            <Instagram />
         </a>
         </footer>
     </section>
