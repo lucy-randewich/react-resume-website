@@ -58,14 +58,14 @@ const HomePage = ({ id }) => {
     const iconContainer = document.getElementById('icon-container');
 
     if (iconContainer) {
-      const numIcons = 10;
+      const numIcons = 15;
 
       for (let i = 0; i < numIcons; i++) {
         const iconElement = document.createElement('div');
         iconElement.classList.add(classes.icon);
 
         const rotation = Math.random() * 360;
-        const positionX = Math.random() * 100;
+        const positionX = Math.random() * 90;
         const positionY = Math.random() * 100;
         const opacity = 0.2 + Math.random() * 0.8;
         const size = 20 + Math.random() * 80;
@@ -95,7 +95,6 @@ const HomePage = ({ id }) => {
   }, []);
 
   const [showDescription, setShowDescription] = useState(false);
-  const [hideDescription, setHideDescription] = useState(false);
   const [scrollPosition, setScrollPosition] = useState(0);
 
   useEffect(() => {
