@@ -1,11 +1,10 @@
 {
   "files": {
-    "main.css": "/react-resume-website/static/css/main.753096ba.css",
-    "main.js": "/react-resume-website/static/js/main.94925550.js",
+    "main.css": "/react-resume-website/static/css/main.952094ce.css",
+    "main.js": "/react-resume-website/static/js/main.68965f10.js",
     "static/js/787.1d5e114e.chunk.js": "/react-resume-website/static/js/787.1d5e114e.chunk.js",
     "static/media/Thesis.pdf": "/react-resume-website/static/media/Thesis.47ba0ac48d0de18be822.pdf",
     "static/media/cw_xm20246.pdf": "/react-resume-website/static/media/cw_xm20246.05641e40281b2089d183.pdf",
-    "static/media/skate.jpeg": "/react-resume-website/static/media/skate.a95a93276f1ce82c0e1c.jpeg",
     "static/media/grad.jpeg": "/react-resume-website/static/media/grad.f9315e2c36b2759a9ad8.jpeg",
     "static/media/armessaging.png": "/react-resume-website/static/media/armessaging.e67e732804076c5495d9.png",
     "static/media/stor3.jpeg": "/react-resume-website/static/media/stor3.61ee8e6c1d685b179ebe.jpeg",
@@ -22,12 +21,12 @@
     "static/media/Cornell_box.png": "/react-resume-website/static/media/Cornell_box.474dd45e36ac98bf3c96.png",
     "static/media/logo.png": "/react-resume-website/static/media/logo.62d3eaca9642afbd0bef.png",
     "index.html": "/react-resume-website/index.html",
-    "main.753096ba.css.map": "/react-resume-website/static/css/main.753096ba.css.map",
-    "main.94925550.js.map": "/react-resume-website/static/js/main.94925550.js.map",
+    "main.952094ce.css.map": "/react-resume-website/static/css/main.952094ce.css.map",
+    "main.68965f10.js.map": "/react-resume-website/static/js/main.68965f10.js.map",
     "787.1d5e114e.chunk.js.map": "/react-resume-website/static/js/787.1d5e114e.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.753096ba.css",
-    "static/js/main.94925550.js"
+    "static/css/main.952094ce.css",
+    "static/js/main.68965f10.js"
   ]
 }
