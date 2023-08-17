@@ -49,6 +49,12 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '10px',
     marginLeft: '10px',
   },
+
+  '@media (max-width: 768px)': {
+    timelineCard: {
+      width: '250px',
+    }
+  }
 }));
 
 const timelineData = [
@@ -150,7 +156,7 @@ const Timeline = ({ id }) => {
             <div
               className={classes.lineContainer}
               style={{
-                height: animateLines ? '90%' : '0%',
+                height: animateLines ? '100%' : '0%',
               }}
               onTransitionEnd={handleLineTransitionEnd}
             >

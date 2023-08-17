@@ -3,7 +3,6 @@ import { makeStyles } from '@mui/styles';
 import Image1 from '../images/stor2.jpeg';
 import Image2 from '../images/lakes.jpeg'; 
 import Image4 from '../images/stor3.jpeg'; 
-import Image5 from '../images/skate.jpeg'; 
 import Image6 from '../images/grad.jpeg'; 
 import CV from '../resources/CV.pdf';
 import Typewriter from 'typewriter-effect';
@@ -57,6 +56,21 @@ const useStyles = makeStyles((theme) => ({
       color: 'white',
     },
   },
+
+  '@media (max-width: 768px)': {
+    aboutText: {
+      fontSize: '0.3rem',
+    },
+    textContainer: {
+      padding: '20px',
+    },
+    aboutPage: {
+      height: '100vh',
+    },
+    typeWriterText: {
+      fontSize: '0.01rem',
+    },
+  },
 }));
 
 const AboutPage = ({ id }) => {
@@ -90,6 +104,7 @@ const AboutPage = ({ id }) => {
             strings: ['Software Developer', 'Squashy Enthusiast', 'Research Associate', 'Computer Science Grad'],
             autoStart: true,
             loop: true,
+            wrapperClassName: classes.typeWriterText,
           }}
         />
           <p className={classes.aboutText}>

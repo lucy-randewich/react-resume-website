@@ -13,13 +13,11 @@ import MLPaper from '../resources/cw_xm20246.pdf';
 const useStyles = makeStyles((theme) => ({
   projectsPage: {
     backgroundColor: '#f7f7f7',
-    display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     height: '130vh',
     width: '100vw',
     display: 'flex',
-    alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden',
   },

@@ -46,6 +46,23 @@ const useStyles = makeStyles((theme) => ({
     backgroundSize: 'contain',
   },
 
+  '@media (max-width: 768px)': {
+    homepageContainer: {
+      height: '120vh',
+    },
+    logo: {
+      maxWidth: '100%',
+    },
+    iconContainer: {
+      overflowX: 'hidden',
+      width: '100%',
+      height: '100%',
+    },
+    description: {
+      fontSize: '1rem',
+    }
+  },
+
 }));
 
 const HomePage = ({ id }) => {
@@ -59,7 +76,7 @@ const HomePage = ({ id }) => {
     const iconContainer = document.getElementById('icon-container');
 
     if (iconContainer) {
-      const numIcons = 15;
+      const numIcons = 11;
 
       for (let i = 0; i < numIcons; i++) {
         const iconElement = document.createElement('div');
@@ -129,7 +146,6 @@ const HomePage = ({ id }) => {
   };
 
   const descriptionStyle = {
-    fontSize: '1.2rem',
     opacity: showDescription ? 1 : 0,
     transform: showDescription ? 'none' : 'translateY(150px)',
     transition: 'opacity 0.5s ease, transform 0.5s',
@@ -142,7 +158,6 @@ const HomePage = ({ id }) => {
     position: 'absolute',
     bottom: '150px', 
     left: '50%',
-    transform: 'translateX(-50%)', 
   };
   
   return (

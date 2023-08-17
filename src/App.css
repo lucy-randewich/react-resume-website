@@ -12,3 +12,9 @@ body {
 header {
   font-family: 'retrokia', sans-serif;
 }
+
+@media screen and (max-width: 480px) {
+  body p {
+    font-size: 8px;
+  }
+}

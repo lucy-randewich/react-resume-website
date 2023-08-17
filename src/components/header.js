@@ -1,9 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { AppBar, Toolbar, Button } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import Logo from '../images/logo.png';
-import '../index.css';
+
+const useStyles = makeStyles((theme) => ({
+  logoImage: {
+    width: '300px',
+    height: 'auto',
+    opacity: 1,
+    transition: 'opacity 0.4s',
+  },
+  '@media (max-width: 768px)': {
+    logoImage: {
+      display: 'none',
+    },
+  },
+  button: {
+    fontSize: '0.1rem'
+  }
+}));
 
 const Header = ({ id }) => {
+  const classes = useStyles();
   const [scrolled, setScrolled] = useState(false);
   const [hovered, setHovered] = useState(false);
 
@@ -70,12 +88,7 @@ const Header = ({ id }) => {
         <img
             src={Logo}
             alt="Logo"
-            style={{
-            width: '300px',
-            height: 'auto',
-            opacity: 1,
-            transition: 'opacity 0.4s',
-            }}
+            className={classes.logoImage}
         />
     </div>
 
