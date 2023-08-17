@@ -3,7 +3,7 @@ import { makeStyles } from '@mui/styles';
 import bigLogo from '../images/biglogo3.png';
 import icon from '../images/bubble2.png';
 import { useParallax } from 'react-scroll-parallax';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
 const useStyles = makeStyles((theme) => ({
   homepageContainer: {
@@ -11,8 +11,8 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    height: '160vh',
-    marginTop: '-20vh',
+    height: '130vh',
+    marginTop: '-5vh',
     overflowY: 'hidden',
   },
   card: {
@@ -59,7 +59,7 @@ const HomePage = ({ id }) => {
     const iconContainer = document.getElementById('icon-container');
 
     if (iconContainer) {
-      const numIcons = 10;
+      const numIcons = 15;
 
       for (let i = 0; i < numIcons; i++) {
         const iconElement = document.createElement('div');
@@ -157,7 +157,7 @@ const HomePage = ({ id }) => {
           </p>
         </div>
 
-        <ArrowDropDownIcon className={classes.arrow} style={arrowStyle}></ArrowDropDownIcon>
+        <ArrowDownwardIcon className={classes.arrow} style={arrowStyle}></ArrowDownwardIcon>
 
       </div>
       

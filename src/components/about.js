@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
 const AboutPage = ({ id }) => {
   const classes = useStyles();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const images = [Image6, Image1, Image2, Image4, Image5];
+  const images = [Image6, Image1, Image2, Image4];
 
   useEffect(() => {
     const timer = setInterval(() => {

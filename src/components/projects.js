@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'hidden',
   },
   sectionTitle: {
-    fontSize: '1.6rem',
+    // fontSize: '1.6rem',
     fontWeight: 'bold',
     marginBottom: '40px',
   },
