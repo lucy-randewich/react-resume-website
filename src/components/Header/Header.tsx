@@ -1,8 +1,13 @@
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { alpha, AppBar, Box, Button, IconButton, Toolbar } from "@mui/material";
 import type { PaletteMode } from "@mui/material";
+import {
+  getLeaderboard,
+  isSupabaseConfigured,
+  type LeaderboardEntry,
+} from "../../services/supabase";
 import { layout } from "../../theme";
 import { ShrimpLeaderboard, ShrimpTank } from "../ShrimpTank";
 import { shrimpAssets } from "../ShrimpTank/shrimp.constants";
@@ -16,6 +21,34 @@ interface HeaderProps {
 export const Header = ({ mode, onToggleMode }: HeaderProps) => {
   const [isTankOpen, setIsTankOpen] = useState(false);
   const [leaderboardScore, setLeaderboardScore] = useState<number | null>(null);
+  const [leaderboardEntries, setLeaderboardEntries] = useState<
+    LeaderboardEntry[] | null
+  >(null);
+  const [hasLeaderboardError, setHasLeaderboardError] = useState(false);
+  const leaderboardRequestRef = useRef<Promise<void> | null>(null);
+
+  const preloadLeaderboard = useCallback(() => {
+    if (
+      !isSupabaseConfigured ||
+      leaderboardEntries !== null ||
+      leaderboardRequestRef.current
+    ) {
+      return;
+    }
+
+    setHasLeaderboardError(false);
+    leaderboardRequestRef.current = getLeaderboard()
+      .then(setLeaderboardEntries)
+      .catch(() => setHasLeaderboardError(true))
+      .finally(() => {
+        leaderboardRequestRef.current = null;
+      });
+  }, [leaderboardEntries]);
+
+  useEffect(() => {
+    const preloadTimer = window.setTimeout(preloadLeaderboard, 900);
+    return () => window.clearTimeout(preloadTimer);
+  }, [preloadLeaderboard]);
 
   const scrollToSection = (sectionId: string) =>
     document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
@@ -139,7 +172,36 @@ export const Header = ({ mode, onToggleMode }: HeaderProps) => {
               title={`Switch to ${mode === "light" ? "dark" : "light"} mode`}
               color="inherit"
               size="small"
-              sx={{ ml: { xs: 0.25, sm: 0.75 } }}
+              sx={(theme) => ({
+                ml: { xs: 0.25, sm: 0.75 },
+                transition:
+                  "background-color .25s ease, color .25s ease, transform .25s ease",
+                "& svg": {
+                  transition: "transform .35s ease",
+                  transformOrigin: "center",
+                },
+                "&:hover, &:focus-visible": {
+                  bgcolor: alpha(theme.palette.primary.main, 0.1),
+                  color: "primary.main",
+                  transform: "translateY(-1px)",
+                },
+                "&:hover svg, &:focus-visible svg": {
+                  transform:
+                    mode === "light"
+                      ? "rotate(-18deg) scale(1.08)"
+                      : "rotate(24deg) scale(1.08)",
+                },
+                "@media (prefers-reduced-motion: reduce)": {
+                  transition: "none",
+                  "& svg": { transition: "none" },
+                  "&:hover, &:focus-visible": {
+                    transform: "none",
+                  },
+                  "&:hover svg, &:focus-visible svg": {
+                    transform: "none",
+                  },
+                },
+              })}
             >
               {mode === "light" ? (
                 <DarkModeOutlinedIcon fontSize="small" />
@@ -152,15 +214,22 @@ export const Header = ({ mode, onToggleMode }: HeaderProps) => {
       </AppBar>
       <ShrimpTank
         isOpen={isTankOpen}
-        onOpenLeaderboard={() => setLeaderboardScore(0)}
+        onOpenLeaderboard={() => {
+          preloadLeaderboard();
+          setLeaderboardScore(0);
+        }}
         onClose={(score) => {
           setIsTankOpen(false);
+          preloadLeaderboard();
           setLeaderboardScore(score);
         }}
       />
       {leaderboardScore !== null && (
         <ShrimpLeaderboard
           score={leaderboardScore}
+          initialEntries={leaderboardEntries}
+          initialHasError={hasLeaderboardError}
+          onEntriesChange={setLeaderboardEntries}
           onClose={() => setLeaderboardScore(null)}
         />
       )}

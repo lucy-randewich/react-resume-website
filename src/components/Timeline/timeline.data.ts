@@ -15,13 +15,6 @@ export const experienceEntries: TimelineEntry[] = [
     highlight: "Built professional tooling for REPHRAIN’s Testbed OS.",
   },
   {
-    period: "2022 — 2023",
-    title: "Teaching Assistant",
-    organisation: "University of Bristol",
-    highlight:
-      "Taught software engineering, operating systems and software security.",
-  },
-  {
     period: "2022",
     title: "Machine Learning Intern",
     organisation: "Oxford Nanopore Technologies",
