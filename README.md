@@ -36,10 +36,27 @@ The Shrimp Tank keeps its game logic, audio hook, sprites, controls, constants, 
 ```bash
 npm run format:check
 npm run lint
+npm run test
 npm run build
 ```
 
 Run `npm run format` or `npm run lint:fix` to apply automatic fixes.
+
+GitHub Actions runs formatting, linting, tests, and a production build on every
+push and pull request.
+
+## Leaderboard setup
+
+The shrimp-tank leaderboard uses Supabase when the following environment
+variables are present:
+
+```bash
+VITE_SUPABASE_URL=
+VITE_SUPABASE_PUBLISHABLE_KEY=
+```
+
+Without those variables, the site still works and the leaderboard shows a
+graceful unavailable state.
 
 ## Deployment
 

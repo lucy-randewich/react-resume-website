@@ -1,15 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import CloseIcon from "@mui/icons-material/Close";
-import FullscreenIcon from "@mui/icons-material/Fullscreen";
-import FullscreenExitIcon from "@mui/icons-material/FullscreenExit";
-import LeaderboardOutlinedIcon from "@mui/icons-material/LeaderboardOutlined";
-import VolumeOffIcon from "@mui/icons-material/VolumeOff";
-import VolumeUpIcon from "@mui/icons-material/VolumeUp";
-import { alpha, Box, Dialog, IconButton, Typography } from "@mui/material";
+import { alpha, Box, Dialog, Typography } from "@mui/material";
 import { colors, shadows } from "../../theme";
-import { BUBBLE_NAMES, MOVEMENTS, shrimpAssets } from "./shrimp.constants";
+import { MOVEMENTS, shrimpAssets } from "./shrimp.constants";
 import { ShrimpControls } from "./ShrimpControls";
 import { ShrimpSprite } from "./ShrimpSprite";
+import { TankBubbles } from "./TankBubbles";
+import { TankScore } from "./TankScore";
+import { TankTopControls } from "./TankTopControls";
 import { useShrimpGame } from "./useShrimpGame";
 import { useShrimpHighScores } from "./useShrimpHighScores";
 import { useTankAudio } from "./useTankAudio";
@@ -103,86 +100,24 @@ export const ShrimpTank = ({
         }}
       >
         <Box className="tank-light" aria-hidden="true" />
-        <IconButton
-          className="tank-interface leaderboard-button"
-          aria-label="Show leaderboard"
-          title="Show leaderboard"
-          onClick={() => {
+        <TankTopControls
+          isFocusMode={isFocusMode}
+          isMuted={isMuted}
+          onClose={closeTank}
+          onOpenLeaderboard={() => {
             onOpenLeaderboard();
             returnFocusToTank();
           }}
-          sx={{
-            position: "absolute",
-            zIndex: 3,
-            right: 135,
-            top: 12,
-            color: colors.tank.ink,
-            "&:hover": { bgcolor: alpha(colors.paper, 0.45) },
-          }}
-        >
-          <LeaderboardOutlinedIcon />
-        </IconButton>
-        <IconButton
-          className="tank-interface sound-button"
-          aria-label={isMuted ? "Unmute tank sounds" : "Mute tank sounds"}
-          onClick={() => {
+          onToggleAudio={() => {
             toggleAudio();
             returnFocusToTank();
           }}
-          sx={{
-            position: "absolute",
-            zIndex: 3,
-            right: 94,
-            top: 12,
-            color: colors.tank.ink,
-            "&:hover": { bgcolor: alpha(colors.paper, 0.45) },
-          }}
-        >
-          {isMuted ? <VolumeOffIcon /> : <VolumeUpIcon />}
-        </IconButton>
-        <IconButton
-          className="tank-interface focus-button"
-          aria-label={isFocusMode ? "Exit focus mode" : "Enter focus mode"}
-          onClick={() => {
+          onToggleFocusMode={() => {
             setIsFocusMode((current) => !current);
             returnFocusToTank();
           }}
-          sx={{
-            position: "absolute",
-            zIndex: 3,
-            right: 53,
-            top: 12,
-            color: colors.tank.ink,
-            "&:hover": { bgcolor: alpha(colors.paper, 0.45) },
-          }}
-        >
-          {isFocusMode ? <FullscreenExitIcon /> : <FullscreenIcon />}
-        </IconButton>
-        <IconButton
-          className="tank-interface close-button"
-          aria-label="Close shrimp tank"
-          onClick={closeTank}
-          sx={{
-            position: "absolute",
-            zIndex: 3,
-            right: 12,
-            top: 12,
-            color: colors.tank.ink,
-            "&:hover": { bgcolor: alpha(colors.paper, 0.45) },
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
-        {BUBBLE_NAMES.map((bubble) => (
-          <Box
-            key={bubble}
-            component="img"
-            src={shrimpAssets.bubble}
-            alt=""
-            className={`tank-bubble bubble-${bubble}`}
-            draggable={false}
-          />
-        ))}
+        />
+        <TankBubbles />
         {!game.hasStarted && (
           <Typography
             component="h2"
@@ -201,54 +136,11 @@ export const ShrimpTank = ({
             Shrimp tank
           </Typography>
         )}
-        <Box
-          className="tank-score tank-interface"
-          aria-label={`Score: ${game.score}. High score: ${
-            highScores.worldRecord ?? "unavailable"
-          }.`}
-          sx={{
-            position: "absolute",
-            zIndex: 3,
-            top: game.hasStarted ? 18 : 78,
-            left: 28,
-            color: colors.tank.score,
-            bgcolor: game.hasStarted
-              ? alpha(colors.paper, 0.24)
-              : alpha(colors.paper, 0.34),
-            px: game.hasStarted ? 0.65 : 0.75,
-            py: game.hasStarted ? 0.2 : 0.25,
-            fontSize: game.hasStarted ? ".72rem" : ".68rem",
-            letterSpacing: game.hasStarted ? ".08em" : ".1em",
-            fontWeight: 700,
-            textTransform: "uppercase",
-            transition:
-              "top .45s ease, background-color .45s ease, padding .45s ease, font-size .45s ease, letter-spacing .45s ease",
-          }}
-        >
-          score{" "}
-          <Box
-            component="span"
-            sx={{ fontFamily: "h2.fontFamily", fontSize: ".95rem", ml: 0.35 }}
-          >
-            {String(game.score).padStart(2, "0")}
-          </Box>
-          <Box
-            component="span"
-            sx={{
-              display: "block",
-              mt: 0.15,
-              fontSize: ".52rem",
-              letterSpacing: ".07em",
-              opacity: 0.82,
-              textTransform: "lowercase",
-            }}
-          >
-            high score{" "}
-            {highScores.worldRecord === null
-              ? "—"
-              : String(highScores.worldRecord).padStart(2, "0")}
-          </Box>
-        </Box>
+        <TankScore
+          hasStarted={game.hasStarted}
+          score={game.score}
+          worldRecord={highScores.worldRecord}
+        />
         {game.isPartyTime && (
           <Typography className="party-message" aria-live="polite">
             SHRIMPLY THE BEST!

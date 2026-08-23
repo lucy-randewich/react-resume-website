@@ -3,6 +3,11 @@
   "name": "Lucy Randewich — Software Engineer",
   "icons": [
     {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    },
+    {
       "src": "/assets/favicons/favicon-32.png",
       "sizes": "32x32",
       "type": "image/png"

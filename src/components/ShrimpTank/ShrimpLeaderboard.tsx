@@ -1,14 +1,9 @@
 import CloseIcon from "@mui/icons-material/Close";
 import {
-  alpha,
   Box,
-  Button,
-  CircularProgress,
   Dialog,
   DialogContent,
   IconButton,
-  Skeleton,
-  TextField,
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -18,6 +13,9 @@ import {
   submitLeaderboardScore,
   type LeaderboardEntry,
 } from "../../services/supabase";
+import { LeaderboardLoadingState } from "./LeaderboardLoadingState";
+import { LeaderboardScoreForm } from "./LeaderboardScoreForm";
+import { LeaderboardScoreList } from "./LeaderboardScoreList";
 
 interface ShrimpLeaderboardProps {
   score: number;
@@ -34,22 +32,16 @@ export const ShrimpLeaderboard = ({
   onEntriesChange,
   onClose,
 }: ShrimpLeaderboardProps) => {
-  const [entries, setEntries] = useState<LeaderboardEntry[] | null>(
-    initialEntries,
+  const [loadedEntries, setLoadedEntries] = useState<LeaderboardEntry[] | null>(
+    null,
   );
   const [name, setName] = useState("");
   const [hasSkipped, setHasSkipped] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const [hasError, setHasError] = useState(initialHasError);
-
-  useEffect(() => {
-    setEntries(initialEntries);
-  }, [initialEntries]);
-
-  useEffect(() => {
-    setHasError(initialHasError);
-  }, [initialHasError]);
+  const [hasLoadError, setHasLoadError] = useState(false);
+  const entries = initialEntries ?? loadedEntries;
+  const hasError = initialHasError || hasLoadError;
 
   useEffect(() => {
     if (!isSupabaseConfigured || entries !== null || hasError) return;
@@ -57,11 +49,11 @@ export const ShrimpLeaderboard = ({
     void getLeaderboard()
       .then((scores) => {
         if (!isCurrent) return;
-        setEntries(scores);
+        setLoadedEntries(scores);
         onEntriesChange(scores);
       })
       .catch(() => {
-        if (isCurrent) setHasError(true);
+        if (isCurrent) setHasLoadError(true);
       });
     return () => {
       isCurrent = false;
@@ -72,8 +64,8 @@ export const ShrimpLeaderboard = ({
   const canPotentiallySaveScore = score > 0 && !hasSkipped && !hasSubmitted;
   const hasHighScore = Boolean(
     entries &&
-      canPotentiallySaveScore &&
-      (entries.length < 5 || score > lowestScore),
+    canPotentiallySaveScore &&
+    (entries.length < 5 || score > lowestScore),
   );
 
   const saveScore = async (event: React.FormEvent) => {
@@ -82,14 +74,14 @@ export const ShrimpLeaderboard = ({
     if (!trimmedName || isSaving) return;
 
     setIsSaving(true);
-    setHasError(false);
+    setHasLoadError(false);
     try {
       const updatedEntries = await submitLeaderboardScore(trimmedName, score);
-      setEntries(updatedEntries);
+      setLoadedEntries(updatedEntries);
       onEntriesChange(updatedEntries);
       setHasSubmitted(true);
     } catch {
-      setHasError(true);
+      setHasLoadError(true);
     } finally {
       setIsSaving(false);
     }
@@ -150,316 +142,25 @@ export const ShrimpLeaderboard = ({
             The leaderboard is taking a little rest. Please try again later.
           </Typography>
         ) : entries === null ? (
-          <Box aria-hidden="true">
-            {canPotentiallySaveScore && (
-              <Box
-                sx={{
-                  display: "grid",
-                  gridTemplateColumns: "88px minmax(0, 1fr)",
-                  alignItems: "stretch",
-                  gap: 2,
-                  p: 1,
-                  border: 1,
-                  borderColor: "divider",
-                  borderRadius: 2,
-                  bgcolor: "background.paper",
-                }}
-              >
-                <Skeleton
-                  variant="rounded"
-                  sx={{ minHeight: 118, borderRadius: 1.5 }}
-                />
-                <Box sx={{ display: "flex", flexDirection: "column", pt: 2 }}>
-                  <Skeleton variant="rounded" height={40} />
-                  <Skeleton variant="rounded" height={38} sx={{ mt: 1 }} />
-                </Box>
-              </Box>
-            )}
-            <Box
-              sx={{
-                mt: canPotentiallySaveScore ? 2.5 : 0,
-                pt: canPotentiallySaveScore ? 2.5 : 0,
-                borderTop: canPotentiallySaveScore ? 1 : 0,
-                borderColor: "divider",
-              }}
-            >
-              <Skeleton width={140} height={34} sx={{ mb: 1 }} />
-              {Array.from({ length: 5 }).map((_, index) => (
-                <Box
-                  key={index}
-                  sx={{
-                    display: "grid",
-                    gridTemplateColumns: "38px minmax(0, 1fr) 36px",
-                    gap: 1.5,
-                    minHeight: 46,
-                    borderTop: 1,
-                    borderColor: "divider",
-                    alignItems: "center",
-                  }}
-                >
-                  <Skeleton width={18} />
-                  <Skeleton width={`${76 - index * 7}%`} />
-                  <Skeleton width={24} />
-                </Box>
-              ))}
-            </Box>
-            <Box
-              sx={{
-                position: "absolute",
-                inset: 0,
-                display: "grid",
-                placeItems: "center",
-                pointerEvents: "none",
-              }}
-            >
-              <CircularProgress size={24} />
-            </Box>
-          </Box>
+          <LeaderboardLoadingState
+            canPotentiallySaveScore={canPotentiallySaveScore}
+          />
         ) : (
           <Box>
             {hasHighScore && (
-              <Box component="form" onSubmit={saveScore}>
-                <Box
-                  sx={{
-                    display: "grid",
-                    gridTemplateColumns: "88px minmax(0, 1fr)",
-                    alignItems: "stretch",
-                    gap: 2,
-                    p: 1,
-                    border: 1,
-                    borderColor: "divider",
-                    borderRadius: 2,
-                    bgcolor: "background.paper",
-                  }}
-                >
-                  <Box
-                    sx={(theme) => ({
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      minHeight: 118,
-                      borderRadius: 1.5,
-                      bgcolor: alpha(theme.palette.primary.main, 0.1),
-                      color: "primary.main",
-                    })}
-                  >
-                    <Typography
-                      sx={{
-                        fontFamily: "h2.fontFamily",
-                        fontSize: "2.3rem",
-                        lineHeight: 1,
-                        letterSpacing: "-.05em",
-                      }}
-                    >
-                      {score}
-                    </Typography>
-                    <Typography
-                      sx={{
-                        mt: 0.6,
-                        fontSize: ".58rem",
-                        fontWeight: 700,
-                        letterSpacing: ".08em",
-                        textTransform: "uppercase",
-                      }}
-                    >
-                      pellets
-                    </Typography>
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <TextField
-                      autoFocus
-                      fullWidth
-                      size="small"
-                      label="Your name"
-                      value={name}
-                      onChange={(event) => setName(event.target.value)}
-                      slotProps={{ htmlInput: { maxLength: 16 } }}
-                      sx={(theme) => ({
-                        bgcolor: "background.paper",
-                        "& .MuiInputLabel-root": {
-                          fontSize: ".82rem",
-                        },
-                        "& .MuiOutlinedInput-root": {
-                          borderRadius: 1.5,
-                        },
-                        "& .MuiOutlinedInput-notchedOutline": {
-                          borderColor: theme.palette.divider,
-                        },
-                        "& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
-                          {
-                            borderColor: theme.palette.text.secondary,
-                          },
-                      })}
-                    />
-                    <Button
-                      fullWidth
-                      type="submit"
-                      variant="contained"
-                      disabled={!name.trim() || isSaving}
-                      sx={{
-                        mt: 1,
-                        py: 0.9,
-                        borderRadius: 1.5,
-                        fontWeight: 700,
-                        boxShadow: "none",
-                        "&:hover": { boxShadow: "none" },
-                      }}
-                    >
-                      {isSaving ? "Saving…" : "Save score"}
-                    </Button>
-                  </Box>
-                </Box>
-                <Box
-                  sx={{ display: "flex", justifyContent: "center", mt: 1.25 }}
-                >
-                  <Button
-                    onClick={() => setHasSkipped(true)}
-                    color="inherit"
-                    size="small"
-                    sx={{ color: "text.secondary", minWidth: 0, px: 1.25 }}
-                  >
-                    Skip
-                  </Button>
-                </Box>
-              </Box>
+              <LeaderboardScoreForm
+                score={score}
+                name={name}
+                isSaving={isSaving}
+                onNameChange={setName}
+                onSkip={() => setHasSkipped(true)}
+                onSubmit={saveScore}
+              />
             )}
-            <Box
-              sx={{
-                mt: hasHighScore ? 2.5 : 0,
-                pt: hasHighScore ? 2.5 : 0,
-                borderTop: hasHighScore ? 1 : 0,
-                borderColor: "divider",
-              }}
-            >
-              {entries.length === 0 ? (
-                <Box sx={{ pr: 4 }}>
-                  <Typography
-                    sx={{
-                      mb: 0.5,
-                      color: "text.secondary",
-                      fontSize: ".62rem",
-                      fontWeight: 800,
-                      letterSpacing: ".12em",
-                      textTransform: "uppercase",
-                    }}
-                  >
-                    Shrimp tank
-                  </Typography>
-                  <Typography
-                    component="h2"
-                    sx={{
-                      fontFamily: "h2.fontFamily",
-                      fontSize: "1.5rem",
-                      lineHeight: 1.2,
-                    }}
-                  >
-                    High scores
-                  </Typography>
-                  <Typography sx={{ mt: 1, color: "text.secondary" }}>
-                    No scores yet.
-                  </Typography>
-                </Box>
-              ) : (
-                <Box>
-                  <Box
-                    sx={{
-                      pr: 4,
-                      mb: 1.4,
-                    }}
-                  >
-                    <Typography
-                      sx={{
-                        mb: 0.5,
-                        color: "text.secondary",
-                        fontSize: ".62rem",
-                        fontWeight: 800,
-                        letterSpacing: ".12em",
-                        textTransform: "uppercase",
-                      }}
-                    >
-                      Shrimp tank
-                    </Typography>
-                    <Typography
-                      component="h2"
-                      sx={{
-                        fontFamily: "h2.fontFamily",
-                        fontSize: "1.5rem",
-                        lineHeight: 1.2,
-                      }}
-                    >
-                      High scores
-                    </Typography>
-                  </Box>
-                  {entries.map((entry, index) => (
-                    <Box
-                      key={entry.id}
-                      sx={{
-                        display: "grid",
-                        gridTemplateColumns: "38px minmax(0, 1fr) auto",
-                        gap: 1.5,
-                        minHeight: 46,
-                        borderTop: 1,
-                        borderColor: "divider",
-                        alignItems: "center",
-                        "&:first-of-type": {
-                          borderColor: "transparent",
-                        },
-                      }}
-                    >
-                      <Box
-                        sx={(theme) => ({
-                          width: 26,
-                          height: 26,
-                          display: "grid",
-                          placeItems: "center",
-                          borderRadius: "50%",
-                          bgcolor:
-                            index === 0
-                              ? alpha(theme.palette.primary.main, 0.12)
-                              : alpha(theme.palette.text.primary, 0.05),
-                          color:
-                            index === 0
-                              ? theme.palette.primary.main
-                              : theme.palette.text.secondary,
-                          fontFamily: "h2.fontFamily",
-                          fontSize: ".95rem",
-                          lineHeight: 1,
-                        })}
-                      >
-                        {index + 1}
-                      </Box>
-                      <Typography
-                        sx={{
-                          fontSize: ".9rem",
-                          fontWeight: index === 0 ? 700 : 600,
-                          color:
-                            index === 0 ? "text.primary" : "text.secondary",
-                        }}
-                      >
-                        {entry.playerName}
-                      </Typography>
-                      <Typography
-                        sx={{
-                          fontSize: ".92rem",
-                          fontWeight: 800,
-                          color: "text.primary",
-                          fontVariantNumeric: "tabular-nums",
-                        }}
-                      >
-                        {entry.score}
-                      </Typography>
-                    </Box>
-                  ))}
-                </Box>
-              )}
-            </Box>
+            <LeaderboardScoreList
+              entries={entries}
+              hasHighScore={hasHighScore}
+            />
           </Box>
         )}
       </DialogContent>
