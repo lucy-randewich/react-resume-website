@@ -3,10 +3,10 @@ import { Box, Button, Typography } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import { layout } from "../../theme";
 import { SectionEyebrow, SectionHeading } from "../shared";
+import { LiveTankPlayer } from "./LiveTankPlayer";
 
 const shrimpCamVideoId = "q3tQH2b-hjQ";
 const shrimpCamUrl = `https://youtube.com/live/${shrimpCamVideoId}`;
-const liveTankEmbedUrl = `https://www.youtube-nocookie.com/embed/${shrimpCamVideoId}`;
 
 interface LiveTankProps {
   id?: string;
@@ -107,37 +107,7 @@ export const LiveTank = ({ id }: LiveTankProps) => (
             </Button>
           </Box>
         </Box>
-        <Box
-          sx={(theme) => ({
-            position: "relative",
-            overflow: "hidden",
-            bgcolor: "background.paper",
-            border: 1,
-            borderColor: "divider",
-            boxShadow:
-              theme.palette.mode === "dark"
-                ? "0 18px 52px rgb(0 0 0 / 28%)"
-                : "0 18px 52px rgb(23 23 22 / 10%)",
-            aspectRatio: "16 / 9",
-          })}
-        >
-          <Box
-            component="iframe"
-            title="Live shrimp tank stream"
-            src={liveTankEmbedUrl}
-            loading="lazy"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-            referrerPolicy="strict-origin-when-cross-origin"
-            sx={{
-              position: "absolute",
-              inset: 0,
-              width: "100%",
-              height: "100%",
-              border: 0,
-            }}
-          />
-        </Box>
+        <LiveTankPlayer videoId={shrimpCamVideoId} youtubeUrl={shrimpCamUrl} />
       </Box>
     </Box>
   </section>
