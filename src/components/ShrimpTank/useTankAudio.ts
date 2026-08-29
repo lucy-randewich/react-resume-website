@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
-const MASTER_VOLUME = 0.18;
+const MASTER_VOLUME = 0.34;
 const AUDIO_FADE_MS = 1800;
 const AUDIO_LAYERS = [
-  { url: "/assets/shrimp/audio/relax-beat-arulo.mp3", volume: 0.12 },
+  { url: "/assets/shrimp/audio/relax-beat-arulo.mp3", volume: 0.58 },
   {
     url: "/assets/shrimp/audio/water-flowing-ambience-loop.mp3",
-    volume: 0.02,
+    volume: 0.08,
   },
 ] as const;
 

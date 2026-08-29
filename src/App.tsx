@@ -1,10 +1,12 @@
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import type { PaletteMode } from "@mui/material";
 import { useMemo, useState } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import About from "./components/About";
 import Contact from "./components/Contact";
 import Header from "./components/Header";
+import LiveTank from "./components/LiveTank";
 import Projects from "./components/Projects";
 import Timeline from "./components/Timeline";
 import { createAppTheme } from "./theme";
@@ -32,15 +34,34 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <div className="App">
-        <Header mode={mode} onToggleMode={toggleMode} />
-        <main>
-          <About id="about" />
-          <Projects id="projects" />
-          <Timeline id="experience" />
-        </main>
-        <Contact id="contact" />
-      </div>
+      <BrowserRouter>
+        <div className="App">
+          <Header mode={mode} onToggleMode={toggleMode} />
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <>
+                  <main>
+                    <About id="about" />
+                    <Projects id="projects" />
+                    <Timeline id="experience" />
+                  </main>
+                  <Contact id="contact" />
+                </>
+              }
+            />
+            <Route
+              path="/shrimp-cam"
+              element={
+                <main>
+                  <LiveTank />
+                </main>
+              }
+            />
+          </Routes>
+        </div>
+      </BrowserRouter>
     </ThemeProvider>
   );
 };

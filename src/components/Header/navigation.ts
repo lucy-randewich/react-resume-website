@@ -1,5 +1,5 @@
 export const navigationItems = [
-  { label: "Projects", sectionId: "projects" },
-  { label: "Experience", sectionId: "experience" },
-  { label: "Say Hi", sectionId: "contact" },
+  { label: "Projects", to: "/#projects" },
+  { label: "Experience", to: "/#experience" },
+  { label: "Say Hi", to: "/#contact" },
 ] as const;

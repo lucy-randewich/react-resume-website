@@ -3,6 +3,7 @@ import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { alpha, AppBar, Box, Button, IconButton, Toolbar } from "@mui/material";
 import type { PaletteMode } from "@mui/material";
+import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 import {
   getLeaderboard,
   isSupabaseConfigured,
@@ -10,7 +11,6 @@ import {
 } from "../../services/supabase";
 import { layout } from "../../theme";
 import { ShrimpLeaderboard, ShrimpTank } from "../ShrimpTank";
-import { shrimpAssets } from "../ShrimpTank/shrimp.constants";
 import { navigationItems } from "./navigation";
 
 interface HeaderProps {
@@ -26,6 +26,8 @@ export const Header = ({ mode, onToggleMode }: HeaderProps) => {
   >(null);
   const [hasLeaderboardError, setHasLeaderboardError] = useState(false);
   const leaderboardRequestRef = useRef<Promise<void> | null>(null);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const preloadLeaderboard = useCallback(() => {
     if (
@@ -50,8 +52,28 @@ export const Header = ({ mode, onToggleMode }: HeaderProps) => {
     return () => window.clearTimeout(preloadTimer);
   }, [preloadLeaderboard]);
 
-  const scrollToSection = (sectionId: string) =>
-    document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
+  const scrollToSection = (sectionId: string) => {
+    const scroll = () =>
+      document
+        .getElementById(sectionId)
+        ?.scrollIntoView({ behavior: "smooth" });
+
+    if (location.pathname !== "/") {
+      navigate(`/#${sectionId}`);
+      window.setTimeout(scroll, 80);
+      return;
+    }
+
+    scroll();
+  };
+
+  const goHome = () => {
+    if (location.pathname !== "/") {
+      navigate("/");
+      return;
+    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <>
@@ -76,7 +98,7 @@ export const Header = ({ mode, onToggleMode }: HeaderProps) => {
         >
           <Box
             component="button"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            onClick={goHome}
             aria-label="Back to top"
             sx={{
               border: 0,
@@ -101,15 +123,56 @@ export const Header = ({ mode, onToggleMode }: HeaderProps) => {
               gap: { xs: 0.25, sm: 1 },
             }}
           >
-            {navigationItems.map(({ label, sectionId }) => (
+            {navigationItems.map(({ label, to }) => {
+              const hashSection = to.startsWith("/#") ? to.slice(2) : null;
+              return (
+                <Button
+                  key={to}
+                  component={hashSection ? "button" : RouterLink}
+                  to={hashSection ? undefined : to}
+                  onClick={
+                    hashSection ? () => scrollToSection(hashSection) : undefined
+                  }
+                  sx={{
+                    display: { xs: "none", sm: "inline-flex" },
+                    color: "inherit",
+                    minWidth: 0,
+                    px: { xs: 1, sm: 1.5 },
+                    fontSize: ".84rem",
+                    "&:hover": {
+                      color: "primary.main",
+                      bgcolor: "transparent",
+                    },
+                  }}
+                >
+                  {label}
+                </Button>
+              );
+            })}
+            <Box
+              sx={{
+                position: "relative",
+                display: "inline-flex",
+                alignItems: "center",
+                "&:hover .shrimp-menu, &:focus-within .shrimp-menu": {
+                  opacity: 1,
+                  transform: "translate(-50%, 0)",
+                  pointerEvents: "auto",
+                },
+                "@media (prefers-reduced-motion: reduce)": {
+                  "& .shrimp-menu": {
+                    transition: "none",
+                  },
+                },
+              }}
+            >
               <Button
-                key={sectionId}
-                onClick={() => scrollToSection(sectionId)}
                 sx={{
-                  display: { xs: "none", sm: "inline-flex" },
+                  position: "relative",
+                  overflow: "visible",
                   color: "inherit",
                   minWidth: 0,
-                  px: { xs: 1, sm: 1.5 },
+                  px: 1.5,
                   fontSize: ".84rem",
                   "&:hover": {
                     color: "primary.main",
@@ -117,55 +180,73 @@ export const Header = ({ mode, onToggleMode }: HeaderProps) => {
                   },
                 }}
               >
-                {label}
+                Shrimps
               </Button>
-            ))}
-            <Button
-              onClick={() => setIsTankOpen(true)}
-              sx={{
-                position: "relative",
-                overflow: "visible",
-                color: "inherit",
-                minWidth: 0,
-                px: 1.5,
-                fontSize: ".84rem",
-                "&:hover": {
-                  color: "primary.main",
-                  bgcolor: "transparent",
-                },
-                "& .tank-link-shrimp": {
+              <Box
+                className="shrimp-menu"
+                sx={(theme) => ({
                   position: "absolute",
-                  zIndex: -1,
+                  zIndex: 4,
+                  top: "100%",
                   left: "50%",
-                  bottom: -24,
-                  width: 42,
-                  height: "auto",
+                  minWidth: 160,
+                  px: 0.75,
+                  pb: 0.75,
+                  pt: 1.5,
+                  display: "grid",
+                  gap: 0.25,
                   opacity: 0,
                   pointerEvents: "none",
-                  imageRendering: "pixelated",
-                  transform: "translate(-50%, 9px) rotate(-5deg)",
-                  transition: "opacity .2s ease, transform .3s ease",
-                },
-                "&:hover .tank-link-shrimp, &:focus-visible .tank-link-shrimp":
-                  {
-                    opacity: 1,
-                    transform: "translate(-50%, 0) rotate(-5deg)",
+                  transform: "translate(-50%, -4px)",
+                  transition:
+                    "opacity .18s ease, transform .22s ease, background-color .2s ease",
+                  "&::before": {
+                    content: '""',
+                    position: "absolute",
+                    inset: "8px 0 0",
+                    zIndex: -1,
+                    bgcolor: alpha(theme.palette.background.default, 0.96),
+                    border: `1px solid ${theme.palette.divider}`,
+                    boxShadow:
+                      theme.palette.mode === "dark"
+                        ? "0 16px 36px rgb(0 0 0 / 34%)"
+                        : "0 16px 36px rgb(23 23 22 / 12%)",
                   },
-                "@media (prefers-reduced-motion: reduce)": {
-                  "& .tank-link-shrimp": { transition: "none" },
-                },
-              }}
-            >
-              Tank
-              <Box
-                component="img"
-                className="tank-link-shrimp"
-                src={shrimpAssets.idle}
-                alt=""
-                aria-hidden="true"
-                draggable={false}
-              />
-            </Button>
+                })}
+              >
+                <Button
+                  onClick={() => setIsTankOpen(true)}
+                  sx={{
+                    justifyContent: "flex-start",
+                    color: "text.primary",
+                    px: 1.25,
+                    fontSize: ".8rem",
+                    "&:hover": {
+                      color: "primary.main",
+                      bgcolor: "action.hover",
+                    },
+                  }}
+                >
+                  Shrimp tank game
+                </Button>
+                <Button
+                  component={RouterLink}
+                  to="/shrimp-cam"
+                  sx={{
+                    justifyContent: "flex-start",
+                    color: "text.primary",
+                    px: 1.25,
+                    fontSize: ".8rem",
+                    "&:hover": {
+                      color: "primary.main",
+                      bgcolor: "action.hover",
+                    },
+                  }}
+                >
+                  Shrimp livestream
+                </Button>
+              </Box>
+            </Box>
             <IconButton
               onClick={onToggleMode}
               aria-label={`Switch to ${mode === "light" ? "dark" : "light"} mode`}
