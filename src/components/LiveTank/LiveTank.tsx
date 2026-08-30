@@ -22,19 +22,7 @@ export const LiveTank = ({ id }: LiveTankProps) => {
           alignItems: "center",
         }}
       >
-        <Box>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: { xs: "flex-start", sm: "flex-end" },
-              justifyContent: "space-between",
-              gap: 2,
-              mb: { xs: 2.5, md: 3 },
-            }}
-          ></Box>
-
-          <LiveTankPlayer videoId={shrimpCamVideoId} />
-        </Box>
+        <LiveTankPlayer videoId={shrimpCamVideoId} />
       </Box>
     </section>
   );

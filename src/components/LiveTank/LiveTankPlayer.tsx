@@ -1,4 +1,6 @@
-import { Box } from "@mui/material";
+import FullscreenExitRoundedIcon from "@mui/icons-material/FullscreenExitRounded";
+import FullscreenRoundedIcon from "@mui/icons-material/FullscreenRounded";
+import { Box, IconButton } from "@mui/material";
 import { useEffect, useId, useRef, useState } from "react";
 import { LiveTankOfflineState } from "./LiveTankOfflineState";
 
@@ -76,7 +78,21 @@ export const LiveTankPlayer = ({
 }: LiveTankPlayerProps) => {
   const playerId = useId().replaceAll(":", "");
   const playerRef = useRef<YouTubePlayer | null>(null);
+  const playerContainerRef = useRef<HTMLDivElement>(null);
   const [playerStatus, setPlayerStatus] = useState<LiveTankStatus>("checking");
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(
+        document.fullscreenElement === playerContainerRef.current,
+      );
+    };
+
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    return () =>
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+  }, []);
 
   useEffect(() => {
     let isMounted = true;
@@ -98,7 +114,10 @@ export const LiveTankPlayer = ({
         videoId,
         host: "https://www.youtube-nocookie.com",
         playerVars: {
-          modestbranding: 1,
+          controls: 0,
+          disablekb: 1,
+          fs: 0,
+          iv_load_policy: 3,
           playsinline: 1,
           rel: 0,
         },
@@ -139,6 +158,7 @@ export const LiveTankPlayer = ({
 
   return (
     <Box
+      ref={playerContainerRef}
       sx={(theme) => ({
         position: "relative",
         overflow: "hidden",
@@ -150,6 +170,12 @@ export const LiveTankPlayer = ({
             ? "0 18px 52px rgb(0 0 0 / 28%)"
             : "0 18px 52px rgb(23 23 22 / 10%)",
         aspectRatio: "16 / 9",
+        "&:fullscreen": {
+          width: "100%",
+          height: "100%",
+          aspectRatio: "auto",
+          border: 0,
+        },
       })}
     >
       <Box
@@ -171,6 +197,41 @@ export const LiveTankPlayer = ({
       >
         <div id={playerId} />
       </Box>
+      {playerStatus === "live" && (
+        <IconButton
+          aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+          title={isFullscreen ? "Exit fullscreen" : "Fullscreen"}
+          onClick={() => {
+            if (document.fullscreenElement) {
+              void document.exitFullscreen();
+            } else {
+              void playerContainerRef.current?.requestFullscreen();
+            }
+          }}
+          sx={{
+            position: "absolute",
+            zIndex: 3,
+            right: 12,
+            bottom: 12,
+            width: 38,
+            height: 38,
+            color: "#fff",
+            bgcolor: "rgb(0 0 0 / 42%)",
+            backdropFilter: "blur(4px)",
+            opacity: 0.72,
+            "&:hover": {
+              bgcolor: "rgb(0 0 0 / 62%)",
+              opacity: 1,
+            },
+          }}
+        >
+          {isFullscreen ? (
+            <FullscreenExitRoundedIcon />
+          ) : (
+            <FullscreenRoundedIcon />
+          )}
+        </IconButton>
+      )}
       {playerStatus === "offline" && <LiveTankOfflineState />}
     </Box>
   );
