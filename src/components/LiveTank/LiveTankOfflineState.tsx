@@ -46,36 +46,6 @@ export const LiveTankOfflineState = ({
       >
         Stream offline
       </Typography>
-      <Button
-        component="a"
-        href={youtubeUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        variant="outlined"
-        size="small"
-        endIcon={<ArrowOutwardIcon sx={{ fontSize: "1rem !important" }} />}
-        sx={{
-          mt: 1.5,
-          minHeight: 32,
-          px: 1.4,
-          color: colors.tank.ink,
-          bgcolor: alpha(colors.paper, 0.48),
-          borderColor: alpha(colors.tank.ink, 0.28),
-          borderRadius: 1.25,
-          fontSize: ".7rem",
-          fontWeight: 800,
-          letterSpacing: ".06em",
-          textTransform: "uppercase",
-          backdropFilter: "blur(4px)",
-          "&:hover": {
-            color: colors.tank.ink,
-            bgcolor: alpha(colors.paper, 0.72),
-            borderColor: alpha(colors.tank.ink, 0.42),
-          },
-        }}
-      >
-        Open YouTube
-      </Button>
     </Box>
 
     <Box
