@@ -1,25 +1,14 @@
 import { Box } from "@mui/material";
-import { useState } from "react";
 import { layout } from "../../theme";
-import { SectionEyebrow, SectionHeading } from "../shared";
-import { LiveTankPlayer, type LiveTankStatus } from "./LiveTankPlayer";
+import { LiveTankPlayer } from "./LiveTankPlayer";
 
 const shrimpCamVideoId = "s_mt9HUTN10";
-const shrimpCamUrl = `https://youtube.com/live/${shrimpCamVideoId}`;
 
 interface LiveTankProps {
   id?: string;
 }
 
-const statusLabels: Record<LiveTankStatus, string> = {
-  checking: "Checking stream",
-  live: "Live now",
-  offline: "Offline",
-};
-
 export const LiveTank = ({ id }: LiveTankProps) => {
-  const [streamStatus, setStreamStatus] = useState<LiveTankStatus>("checking");
-
   return (
     <section id={id}>
       <Box
@@ -42,14 +31,9 @@ export const LiveTank = ({ id }: LiveTankProps) => {
               gap: 2,
               mb: { xs: 2.5, md: 3 },
             }}
-          >
-          </Box>
+          ></Box>
 
-          <LiveTankPlayer
-            videoId={shrimpCamVideoId}
-            youtubeUrl={shrimpCamUrl}
-            onStatusChange={setStreamStatus}
-          />
+          <LiveTankPlayer videoId={shrimpCamVideoId} />
         </Box>
       </Box>
     </section>

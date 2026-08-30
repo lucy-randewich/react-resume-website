@@ -1,18 +1,11 @@
-import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
-import { alpha, Box, Button, Typography } from "@mui/material";
+import { alpha, Box, Typography } from "@mui/material";
 import { colors } from "../../theme";
 import { shrimpAssets } from "../ShrimpTank/shrimp.constants";
 import { ShrimpSprite } from "../ShrimpTank/ShrimpSprite";
 import { TankBubbles } from "../ShrimpTank/TankBubbles";
 import "../ShrimpTank/ShrimpTank.css";
 
-interface LiveTankOfflineStateProps {
-  youtubeUrl: string;
-}
-
-export const LiveTankOfflineState = ({
-  youtubeUrl,
-}: LiveTankOfflineStateProps) => (
+export const LiveTankOfflineState = () => (
   <Box
     className="tank-shell"
     sx={{

@@ -31,12 +31,12 @@ declare global {
 
 interface YouTubePlayer {
   destroy: () => void;
+  getDuration: () => number;
   getVideoData: () => { isLive?: boolean };
 }
 
 interface LiveTankPlayerProps {
   videoId: string;
-  youtubeUrl: string;
   onStatusChange?: (status: LiveTankStatus) => void;
 }
 
@@ -72,16 +72,22 @@ const loadYouTubeApi = () =>
 
 export const LiveTankPlayer = ({
   videoId,
-  youtubeUrl,
   onStatusChange,
 }: LiveTankPlayerProps) => {
   const playerId = useId().replaceAll(":", "");
   const playerRef = useRef<YouTubePlayer | null>(null);
-  const [isOffline, setIsOffline] = useState(false);
+  const [playerStatus, setPlayerStatus] = useState<LiveTankStatus>("checking");
 
   useEffect(() => {
     let isMounted = true;
+    let statusTimer: number | undefined;
     onStatusChange?.("checking");
+
+    const updateStatus = (status: LiveTankStatus) => {
+      if (!isMounted) return;
+      setPlayerStatus(status);
+      onStatusChange?.(status);
+    };
 
     loadYouTubeApi().then(() => {
       if (!isMounted || !window.YT?.Player) {
@@ -98,29 +104,26 @@ export const LiveTankPlayer = ({
         },
         events: {
           onReady: (event) => {
-            if (!isMounted) return;
+            statusTimer = window.setTimeout(() => {
+              const videoData = event.target.getVideoData();
+              const isLive =
+                videoData.isLive === true || event.target.getDuration() === 0;
 
-            const isLive = event.target.getVideoData().isLive === true;
-            setIsOffline(!isLive);
-            onStatusChange?.(isLive ? "live" : "offline");
+              updateStatus(isLive ? "live" : "offline");
+            }, 1200);
           },
           onStateChange: (event) => {
             const endedState = window.YT?.PlayerState?.ENDED ?? 0;
 
-            if (
-              isMounted &&
-              (event.data === endedState ||
-                event.target.getVideoData().isLive !== true)
-            ) {
-              setIsOffline(true);
-              onStatusChange?.("offline");
+            if (event.data === endedState) {
+              updateStatus("offline");
+            } else if (event.target.getVideoData().isLive === true) {
+              updateStatus("live");
             }
           },
           onError: () => {
-            if (isMounted) {
-              setIsOffline(true);
-              onStatusChange?.("offline");
-            }
+            window.clearTimeout(statusTimer);
+            updateStatus("offline");
           },
         },
       });
@@ -128,6 +131,7 @@ export const LiveTankPlayer = ({
 
     return () => {
       isMounted = false;
+      window.clearTimeout(statusTimer);
       playerRef.current?.destroy();
       playerRef.current = null;
     };
@@ -148,27 +152,26 @@ export const LiveTankPlayer = ({
         aspectRatio: "16 / 9",
       })}
     >
-      {isOffline ? (
-        <LiveTankOfflineState youtubeUrl={youtubeUrl} />
-      ) : (
-        <Box
-          sx={{
-            position: "absolute",
-            inset: 0,
+      <Box
+        sx={{
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          bgcolor: "#000",
+          opacity: playerStatus === "live" ? 1 : 0,
+          pointerEvents: playerStatus === "live" ? "auto" : "none",
+          "& iframe": {
+            display: "block",
             width: "100%",
             height: "100%",
-            bgcolor: "#000",
-            "& iframe": {
-              display: "block",
-              width: "100%",
-              height: "100%",
-              border: 0,
-            },
-          }}
-        >
-          <div id={playerId} />
-        </Box>
-      )}
+            border: 0,
+          },
+        }}
+      >
+        <div id={playerId} />
+      </Box>
+      {playerStatus === "offline" && <LiveTankOfflineState />}
     </Box>
   );
 };
