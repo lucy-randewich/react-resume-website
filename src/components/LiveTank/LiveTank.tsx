@@ -5,7 +5,7 @@ import { layout } from "../../theme";
 import { SectionEyebrow, SectionHeading } from "../shared";
 import { LiveTankPlayer } from "./LiveTankPlayer";
 
-const shrimpCamVideoId = "w5ZENKFMYpI";
+const shrimpCamVideoId = "A-pBQZfxhVQ";
 const shrimpCamUrl = `https://youtube.com/live/${shrimpCamVideoId}`;
 
 interface LiveTankProps {
