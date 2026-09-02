@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import { layout } from "../../theme";
 import { LiveTankPlayer } from "./LiveTankPlayer";
 
-const shrimpCamVideoId = "s_mt9HUTN10";
+const shrimpCamVideoId = "GKUB9YbEgsM";
 
 interface LiveTankProps {
   id?: string;
