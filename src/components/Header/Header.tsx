@@ -20,6 +20,7 @@ interface HeaderProps {
 
 export const Header = ({ mode, onToggleMode }: HeaderProps) => {
   const [isTankOpen, setIsTankOpen] = useState(false);
+  const [isShrimpMenuDismissed, setIsShrimpMenuDismissed] = useState(false);
   const [leaderboardScore, setLeaderboardScore] = useState<number | null>(null);
   const [leaderboardSessionId, setLeaderboardSessionId] = useState<
     string | null
@@ -175,15 +176,21 @@ export const Header = ({ mode, onToggleMode }: HeaderProps) => {
           >
             {renderNavigationItem(portfolioNavigationItem)}
             <Box
+              onMouseLeave={() => setIsShrimpMenuDismissed(false)}
               sx={{
                 position: "relative",
                 display: "inline-flex",
                 alignItems: "center",
-                "&:hover .shrimp-menu, &:focus-within .shrimp-menu": {
-                  opacity: 1,
-                  transform: "translate(-50%, 0)",
-                  pointerEvents: "auto",
-                },
+                ...(isShrimpMenuDismissed
+                  ? {}
+                  : {
+                      "&:hover .shrimp-menu, &:focus-within .shrimp-menu": {
+                        opacity: 1,
+                        visibility: "visible",
+                        transform: "translate(-50%, 0)",
+                        pointerEvents: "auto",
+                      },
+                    }),
                 "@media (prefers-reduced-motion: reduce)": {
                   "& .shrimp-menu": {
                     transition: "none",
@@ -192,6 +199,8 @@ export const Header = ({ mode, onToggleMode }: HeaderProps) => {
               }}
             >
               <Button
+                onClick={() => setIsShrimpMenuDismissed(false)}
+                aria-haspopup="menu"
                 sx={{
                   position: "relative",
                   overflow: "visible",
@@ -209,66 +218,97 @@ export const Header = ({ mode, onToggleMode }: HeaderProps) => {
               </Button>
               <Box
                 className="shrimp-menu"
+                role="menu"
+                aria-label="Shrimp pages"
                 sx={(theme) => ({
                   position: "absolute",
                   zIndex: 4,
-                  top: "100%",
+                  top: "calc(100% + 6px)",
                   left: "50%",
-                  minWidth: 160,
-                  px: 0.75,
-                  pb: 0.75,
-                  pt: 1.5,
+                  width: "max-content",
+                  p: 0.5,
                   display: "grid",
-                  gap: 0.25,
+                  gridTemplateColumns: "repeat(2, auto)",
+                  gap: 0.125,
                   opacity: 0,
+                  visibility: "hidden",
                   pointerEvents: "none",
-                  transform: "translate(-50%, -4px)",
+                  transform: "translate(-50%, -6px)",
+                  bgcolor: alpha(theme.palette.background.default, 0.97),
+                  border: `1px solid ${theme.palette.divider}`,
+                  borderRadius: 2.5,
+                  boxShadow:
+                    theme.palette.mode === "dark"
+                      ? "0 12px 28px rgb(0 0 0 / 30%)"
+                      : "0 12px 28px rgb(23 23 22 / 11%)",
+                  backdropFilter: "blur(12px)",
                   transition:
-                    "opacity .18s ease, transform .22s ease, background-color .2s ease",
+                    "opacity .16s ease, transform .2s ease, visibility .16s",
                   "&::before": {
                     content: '""',
                     position: "absolute",
-                    inset: "8px 0 0",
-                    zIndex: -1,
-                    bgcolor: alpha(theme.palette.background.default, 0.96),
-                    border: `1px solid ${theme.palette.divider}`,
-                    boxShadow:
-                      theme.palette.mode === "dark"
-                        ? "0 16px 36px rgb(0 0 0 / 34%)"
-                        : "0 16px 36px rgb(23 23 22 / 12%)",
+                    right: 0,
+                    bottom: "100%",
+                    left: 0,
+                    height: 8,
                   },
                 })}
               >
                 <Button
-                  onClick={() => setIsTankOpen(true)}
+                  role="menuitem"
+                  aria-label="Shrimp game"
+                  onClick={(event) => {
+                    setIsShrimpMenuDismissed(true);
+                    event.currentTarget.blur();
+                    setIsTankOpen(true);
+                  }}
                   sx={{
-                    justifyContent: "flex-start",
                     color: "text.primary",
-                    px: 1.25,
-                    fontSize: ".8rem",
+                    minWidth: 56,
+                    px: 1.2,
+                    py: 0.65,
+                    borderRadius: 2,
+                    fontSize: ".76rem",
+                    fontWeight: 600,
+                    lineHeight: 1.4,
+                    textTransform: "none",
                     "&:hover": {
                       color: "primary.main",
                       bgcolor: "action.hover",
                     },
                   }}
                 >
-                  Shrimp tank game
+                  Game
                 </Button>
                 <Button
                   component={RouterLink}
                   to="/shrimp-cam/"
+                  role="menuitem"
+                  aria-label="Shrimp cam"
+                  onClick={(event) => {
+                    setIsShrimpMenuDismissed(true);
+                    event.currentTarget.blur();
+                  }}
                   sx={{
-                    justifyContent: "flex-start",
-                    color: "text.primary",
-                    px: 1.25,
-                    fontSize: ".8rem",
+                    color:
+                      location.pathname === "/shrimp-cam/"
+                        ? "primary.main"
+                        : "text.primary",
+                    minWidth: 56,
+                    px: 1.2,
+                    py: 0.65,
+                    borderRadius: 2,
+                    fontSize: ".76rem",
+                    fontWeight: 600,
+                    lineHeight: 1.4,
+                    textTransform: "none",
                     "&:hover": {
                       color: "primary.main",
                       bgcolor: "action.hover",
                     },
                   }}
                 >
-                  Shrimp livestream
+                  Cam
                 </Button>
               </Box>
             </Box>
