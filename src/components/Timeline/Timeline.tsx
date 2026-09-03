@@ -3,7 +3,7 @@ import { Box, Button } from "@mui/material";
 import { useState } from "react";
 import cv from "../../assets/documents/lucy-randewich-cv.pdf";
 import { layout } from "../../theme";
-import { SectionEyebrow, SectionHeading } from "../shared";
+import { SectionEyebrow } from "../shared";
 import { educationEntry, experienceEntries } from "./timeline.data";
 import { TimelineItem } from "./TimelineItem";
 
@@ -24,10 +24,9 @@ export const Timeline = ({ id }: TimelineProps) => {
           px: { xs: 2.5, md: 4 },
         }}
       >
-        <SectionEyebrow>Experience</SectionEyebrow>
-        <SectionHeading marginBottom={{ xs: 5, md: 7 }}>
-          Grounded in research, moved to production.
-        </SectionHeading>
+        <Box sx={{ mb: { xs: 4, md: 5 } }}>
+          <SectionEyebrow>Experience</SectionEyebrow>
+        </Box>
         <Box sx={{ borderTop: 1, borderColor: "divider" }}>
           {experienceEntries.map((entry) => (
             <TimelineItem

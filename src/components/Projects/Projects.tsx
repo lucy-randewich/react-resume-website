@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import { layout } from "../../theme";
-import { SectionEyebrow, SectionHeading } from "../shared";
+import { SectionEyebrow } from "../shared";
 import { ProjectCard } from "./ProjectCard";
 import { projects } from "./projects.data";
 
@@ -18,9 +18,8 @@ export const Projects = ({ id }: ProjectsProps) => (
       }}
     >
       <Box sx={{ maxWidth: layout.contentWidth, mx: "auto" }}>
-        <SectionEyebrow>Selected work</SectionEyebrow>
-        <Box sx={{ mb: { xs: 5, md: 7 } }}>
-          <SectionHeading>Some stuff I've made</SectionHeading>
+        <Box sx={{ mb: { xs: 4, md: 5 } }}>
+          <SectionEyebrow>Some stuff I've made</SectionEyebrow>
         </Box>
         <Box
           sx={{
