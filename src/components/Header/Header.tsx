@@ -11,7 +11,7 @@ import {
 } from "../../services/supabase";
 import { layout } from "../../theme";
 import { ShrimpLeaderboard, ShrimpTank } from "../ShrimpTank";
-import { navigationItems } from "./navigation";
+import { portfolioNavigationItem, trailingNavigationItems } from "./navigation";
 
 interface HeaderProps {
   mode: PaletteMode;
@@ -78,6 +78,53 @@ export const Header = ({ mode, onToggleMode }: HeaderProps) => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const renderNavigationItem = ({
+    label,
+    to,
+  }: {
+    label: string;
+    to: string;
+  }) => {
+    const hashSection = to.startsWith("/#") ? to.slice(2) : null;
+    const isPortfolio = to === "/";
+    const isActive = isPortfolio
+      ? location.pathname === "/"
+      : location.pathname === to;
+
+    return (
+      <Button
+        key={to}
+        component={hashSection || isPortfolio ? "button" : RouterLink}
+        to={hashSection || isPortfolio ? undefined : to}
+        onClick={
+          hashSection
+            ? () => scrollToSection(hashSection)
+            : isPortfolio
+              ? goHome
+              : undefined
+        }
+        aria-current={isActive ? "page" : undefined}
+        sx={{
+          display: {
+            xs: label === "Artwork" ? "inline-flex" : "none",
+            sm: "inline-flex",
+          },
+          color: isActive ? "primary.main" : "inherit",
+          minWidth: 0,
+          px: { xs: 1, sm: 1.5 },
+          fontSize: ".84rem",
+          fontWeight: isActive ? 700 : 500,
+          "&:hover": {
+            color: "primary.main",
+            bgcolor: "transparent",
+          },
+        }}
+      >
+        {label}
+      </Button>
+    );
+  };
+
   return (
     <>
       <AppBar
@@ -126,32 +173,7 @@ export const Header = ({ mode, onToggleMode }: HeaderProps) => {
               gap: { xs: 0.25, sm: 1 },
             }}
           >
-            {navigationItems.map(({ label, to }) => {
-              const hashSection = to.startsWith("/#") ? to.slice(2) : null;
-              return (
-                <Button
-                  key={to}
-                  component={hashSection ? "button" : RouterLink}
-                  to={hashSection ? undefined : to}
-                  onClick={
-                    hashSection ? () => scrollToSection(hashSection) : undefined
-                  }
-                  sx={{
-                    display: { xs: "none", sm: "inline-flex" },
-                    color: "inherit",
-                    minWidth: 0,
-                    px: { xs: 1, sm: 1.5 },
-                    fontSize: ".84rem",
-                    "&:hover": {
-                      color: "primary.main",
-                      bgcolor: "transparent",
-                    },
-                  }}
-                >
-                  {label}
-                </Button>
-              );
-            })}
+            {renderNavigationItem(portfolioNavigationItem)}
             <Box
               sx={{
                 position: "relative",
@@ -250,6 +272,7 @@ export const Header = ({ mode, onToggleMode }: HeaderProps) => {
                 </Button>
               </Box>
             </Box>
+            {trailingNavigationItems.map(renderNavigationItem)}
             <IconButton
               onClick={onToggleMode}
               aria-label={`Switch to ${mode === "light" ? "dark" : "light"} mode`}

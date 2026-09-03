@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import About from "./components/About";
+import Art from "./components/Art";
 import Contact from "./components/Contact";
 import Header from "./components/Header";
 import LiveTank from "./components/LiveTank";
@@ -49,6 +50,14 @@ const App = () => {
                   </main>
                   <Contact id="contact" />
                 </>
+              }
+            />
+            <Route
+              path="/artwork"
+              element={
+                <main>
+                  <Art id="paintings" />
+                </main>
               }
             />
             <Route

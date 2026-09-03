@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import { layout } from "../../theme";
+import { LiveTankInfo } from "./LiveTankInfo";
 import { LiveTankPlayer } from "./LiveTankPlayer";
 
 const shrimpCamVideoId = "aWHxtpEWJeo";
@@ -22,7 +23,10 @@ export const LiveTank = ({ id }: LiveTankProps) => {
           alignItems: "center",
         }}
       >
-        <LiveTankPlayer videoId={shrimpCamVideoId} />
+        <Box>
+          <LiveTankPlayer videoId={shrimpCamVideoId} />
+          <LiveTankInfo />
+        </Box>
       </Box>
     </section>
   );
