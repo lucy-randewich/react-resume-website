@@ -98,7 +98,8 @@ export const ShrimpLeaderboard = ({
       open
       onClose={onClose}
       fullWidth
-      maxWidth="xs"
+      maxWidth="md"
+      transitionDuration={{ enter: 0, exit: 160 }}
       aria-label={hasHighScore ? "Add your leaderboard name" : "High scores"}
       slotProps={{
         paper: {
@@ -108,7 +109,11 @@ export const ShrimpLeaderboard = ({
             borderColor: "divider",
             borderRadius: 3,
             boxShadow: "0 24px 70px rgb(0 0 0 / 18%)",
-            minHeight: canPotentiallySaveScore ? 430 : 310,
+            height: {
+              xs: "min(520px, calc(100dvh - 24px))",
+              md: "min(620px, calc(100dvh - 64px))",
+            },
+            overflow: "hidden",
           },
         },
         backdrop: {
@@ -139,20 +144,41 @@ export const ShrimpLeaderboard = ({
           px: { xs: 2.5, sm: 3 },
           pb: { xs: 2.5, sm: 3 },
           pt: canPotentiallySaveScore ? 5 : 2,
-          minHeight: canPotentiallySaveScore ? 430 : 310,
+          height: "100%",
+          width: "100%",
+          boxSizing: "border-box",
+          overflowY: "auto",
+          overscrollBehavior: "contain",
+          scrollbarGutter: "stable",
           position: "relative",
         }}
       >
         {!isSupabaseConfigured || hasError ? (
-          <Typography color="text.secondary">
-            The leaderboard is taking a little rest. Please try again later.
-          </Typography>
+          <Box sx={{ height: "100%", display: "grid", placeItems: "center" }}>
+            <Typography color="text.secondary">
+              The leaderboard is taking a little rest. Please try again later.
+            </Typography>
+          </Box>
         ) : entries === null ? (
           <LeaderboardLoadingState
             canPotentiallySaveScore={canPotentiallySaveScore}
           />
         ) : (
-          <Box>
+          <Box
+            sx={{
+              minHeight: "100%",
+              display: "grid",
+              gridTemplateColumns: {
+                xs: "minmax(0, 1fr)",
+                md: hasHighScore
+                  ? "minmax(0, 320px) minmax(0, 420px)"
+                  : "minmax(0, 480px)",
+              },
+              alignContent: "center",
+              justifyContent: "center",
+              columnGap: 4,
+            }}
+          >
             {hasHighScore && (
               <LeaderboardScoreForm
                 score={score}

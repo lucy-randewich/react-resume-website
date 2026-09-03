@@ -1,6 +1,4 @@
 import CloseIcon from "@mui/icons-material/Close";
-import FullscreenIcon from "@mui/icons-material/Fullscreen";
-import FullscreenExitIcon from "@mui/icons-material/FullscreenExit";
 import LeaderboardOutlinedIcon from "@mui/icons-material/LeaderboardOutlined";
 import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
@@ -8,12 +6,10 @@ import { alpha, IconButton } from "@mui/material";
 import { colors } from "../../theme";
 
 interface TankTopControlsProps {
-  isFocusMode: boolean;
   isMuted: boolean;
   onClose: () => void;
   onOpenLeaderboard: () => void;
   onToggleAudio: () => void;
-  onToggleFocusMode: () => void;
 }
 
 const controlSx = (right: number) => ({
@@ -26,12 +22,10 @@ const controlSx = (right: number) => ({
 });
 
 export const TankTopControls = ({
-  isFocusMode,
   isMuted,
   onClose,
   onOpenLeaderboard,
   onToggleAudio,
-  onToggleFocusMode,
 }: TankTopControlsProps) => (
   <>
     <IconButton
@@ -39,7 +33,7 @@ export const TankTopControls = ({
       aria-label="Show leaderboard"
       title="Show leaderboard"
       onClick={onOpenLeaderboard}
-      sx={controlSx(135)}
+      sx={controlSx(94)}
     >
       <LeaderboardOutlinedIcon />
     </IconButton>
@@ -47,17 +41,9 @@ export const TankTopControls = ({
       className="tank-interface sound-button"
       aria-label={isMuted ? "Unmute tank sounds" : "Mute tank sounds"}
       onClick={onToggleAudio}
-      sx={controlSx(94)}
-    >
-      {isMuted ? <VolumeOffIcon /> : <VolumeUpIcon />}
-    </IconButton>
-    <IconButton
-      className="tank-interface focus-button"
-      aria-label={isFocusMode ? "Exit focus mode" : "Enter focus mode"}
-      onClick={onToggleFocusMode}
       sx={controlSx(53)}
     >
-      {isFocusMode ? <FullscreenExitIcon /> : <FullscreenIcon />}
+      {isMuted ? <VolumeOffIcon /> : <VolumeUpIcon />}
     </IconButton>
     <IconButton
       className="tank-interface close-button"

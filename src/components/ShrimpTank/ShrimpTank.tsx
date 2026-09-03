@@ -28,7 +28,6 @@ export const ShrimpTank = ({
   onOpenLeaderboard,
 }: ShrimpTankProps) => {
   const tankRef = useRef<HTMLDivElement>(null);
-  const [isFocusMode, setIsFocusMode] = useState(false);
   const [gameSessionId, setGameSessionId] = useState<string | null>(null);
   const {
     isMuted,
@@ -66,7 +65,6 @@ export const ShrimpTank = ({
     onClose(game.score, gameSessionId);
     stopAudio();
     game.reset();
-    setIsFocusMode(false);
     setGameSessionId(null);
   };
 
@@ -88,14 +86,14 @@ export const ShrimpTank = ({
       open={isOpen}
       onClose={closeTank}
       onKeyDown={handleTankKeyDown}
-      maxWidth={isFocusMode ? "md" : "xs"}
+      maxWidth="md"
       fullWidth
+      transitionDuration={{ enter: 180, exit: 0 }}
       slotProps={{
         paper: {
           sx: {
             overflow: "hidden",
             boxShadow: shadows.dialog,
-            transition: "max-width .6s ease, width .6s ease",
           },
         },
         backdrop: {
@@ -114,7 +112,7 @@ export const ShrimpTank = ({
           backgroundImage: `linear-gradient(${alpha(colors.paper, 0.08)}, ${alpha(colors.tank.ink, 0.08)}), url('${shrimpAssets.background}')`,
           backgroundPosition: "center",
           backgroundSize: "cover",
-          minHeight: isFocusMode ? { xs: 520, md: 620 } : 430,
+          minHeight: { xs: 520, md: 620 },
           position: "relative",
           overflow: "hidden",
           p: 3.5,
@@ -122,7 +120,6 @@ export const ShrimpTank = ({
       >
         <Box className="tank-light" aria-hidden="true" />
         <TankTopControls
-          isFocusMode={isFocusMode}
           isMuted={isMuted}
           onClose={closeTank}
           onOpenLeaderboard={() => {
@@ -131,10 +128,6 @@ export const ShrimpTank = ({
           }}
           onToggleAudio={() => {
             toggleAudio();
-            returnFocusToTank();
-          }}
-          onToggleFocusMode={() => {
-            setIsFocusMode((current) => !current);
             returnFocusToTank();
           }}
         />

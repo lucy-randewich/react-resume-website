@@ -49,7 +49,7 @@ export const About = ({ id }: AboutProps) => (
           }}
         >
           I’m a Full-Stack Software Engineer with experience across insurance
-          systems, machine-learning applications and cyber-security research
+          systems, machine-learning applications, cyber-security research
           tooling, and shrimp keeping.
         </Typography>
         <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1.5, mt: 4 }}>

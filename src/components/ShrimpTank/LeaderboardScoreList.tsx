@@ -39,9 +39,11 @@ export const LeaderboardScoreList = ({
 }: LeaderboardScoreListProps) => (
   <Box
     sx={{
-      mt: hasHighScore ? 2.5 : 0,
-      pt: hasHighScore ? 2.5 : 0,
-      borderTop: hasHighScore ? 1 : 0,
+      mt: { xs: hasHighScore ? 2.5 : 0, md: 0 },
+      pt: { xs: hasHighScore ? 2.5 : 0, md: 0 },
+      pl: { xs: 0, md: hasHighScore ? 4 : 0 },
+      borderTop: { xs: hasHighScore ? 1 : 0, md: 0 },
+      borderLeft: { xs: 0, md: hasHighScore ? 1 : 0 },
       borderColor: "divider",
     }}
   >

@@ -7,7 +7,18 @@ interface LeaderboardLoadingStateProps {
 export const LeaderboardLoadingState = ({
   canPotentiallySaveScore,
 }: LeaderboardLoadingStateProps) => (
-  <Box aria-hidden="true">
+  <Box
+    aria-hidden="true"
+    sx={{
+      minHeight: "100%",
+      width: "100%",
+      maxWidth: 480,
+      mx: "auto",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+    }}
+  >
     {canPotentiallySaveScore && (
       <Box
         sx={{

@@ -52,8 +52,7 @@ export const Header = ({ mode, onToggleMode }: HeaderProps) => {
   }, [leaderboardEntries]);
 
   useEffect(() => {
-    const preloadTimer = window.setTimeout(preloadLeaderboard, 900);
-    return () => window.clearTimeout(preloadTimer);
+    preloadLeaderboard();
   }, [preloadLeaderboard]);
 
   const scrollToSection = (sectionId: string) => {
