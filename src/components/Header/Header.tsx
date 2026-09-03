@@ -87,9 +87,11 @@ export const Header = ({ mode, onToggleMode }: HeaderProps) => {
   }) => {
     const hashSection = to.startsWith("/#") ? to.slice(2) : null;
     const isPortfolio = to === "/";
+    const normalizedPath = location.pathname.replace(/\/+$/, "") || "/";
+    const normalizedDestination = to.replace(/\/+$/, "") || "/";
     const isActive = isPortfolio
-      ? location.pathname === "/"
-      : location.pathname === to;
+      ? normalizedPath === "/"
+      : normalizedPath === normalizedDestination;
 
     return (
       <Button
@@ -108,6 +110,9 @@ export const Header = ({ mode, onToggleMode }: HeaderProps) => {
           display: {
             xs: label === "Artwork" ? "inline-flex" : "none",
             sm: "inline-flex",
+          },
+          "@media (max-width: 359px)": {
+            display: "none",
           },
           color: isActive ? "primary.main" : "inherit",
           minWidth: 0,
@@ -157,8 +162,10 @@ export const Header = ({ mode, onToggleMode }: HeaderProps) => {
               color: "inherit",
               cursor: "pointer",
               fontWeight: 700,
-              fontSize: "1rem",
+              fontSize: { xs: ".9rem", sm: "1rem" },
               letterSpacing: "-.03em",
+              whiteSpace: "nowrap",
+              flexShrink: 0,
               "&:hover": { color: "primary.main" },
             }}
           >
@@ -205,7 +212,7 @@ export const Header = ({ mode, onToggleMode }: HeaderProps) => {
                   overflow: "visible",
                   color: "inherit",
                   minWidth: 0,
-                  px: 1.5,
+                  px: { xs: 1, sm: 1.5 },
                   fontSize: ".84rem",
                   "&:hover": {
                     color: "primary.main",
@@ -290,7 +297,7 @@ export const Header = ({ mode, onToggleMode }: HeaderProps) => {
                   }}
                   sx={{
                     color:
-                      location.pathname === "/shrimp-cam/"
+                      location.pathname.replace(/\/+$/, "") === "/shrimp-cam"
                         ? "primary.main"
                         : "text.primary",
                     minWidth: 56,

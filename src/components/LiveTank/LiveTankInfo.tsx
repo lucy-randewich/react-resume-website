@@ -26,7 +26,7 @@ const shrimpCamFaqs = [
     id: "stream",
     question: "How does the stream work?",
     paragraphs: [
-      "A Go-Pro Hero 8 is connected via USB to a Raspberry Pi which sends the video feed to YouTube, allowing it to be embedded here.",
+      "A GoPro Hero 8 is connected via USB to a Raspberry Pi which sends the video feed to YouTube, allowing it to be embedded here.",
     ],
   },
   {
@@ -34,8 +34,8 @@ const shrimpCamFaqs = [
     question: "Why a shrimp tank?",
     paragraphs: [
       <>
-        I scrolled back through my Instagram DMs to find the reels which sparked my
-        interest in shrimp keeping. I found these culprits:
+        I scrolled back through my Instagram DMs to find the reels which sparked
+        my interest in shrimp keeping. I found these culprits:
         <Link
           href="https://www.instagram.com/reel/DVuAMJzknvz/"
           target="_blank"
@@ -64,7 +64,7 @@ const shrimpCamFaqs = [
     id: "specs",
     question: "What's the aquarium setup?",
     paragraphs: [
-      "The aquarium is a 10-gallon tank equipped with only a sponge filter and lighting. The lights are on a timer which gradually turns on at around 9am and off 10 hours later. The substrate is fluval stratum, into which monte carlo is planted which is intended to carpet the bottom of the tank over time. There is a mystery leafy plant in one corner of the tank. The hardscape consists of only one piece of driftwood which has weeping moss attached to it. The tank has no other inhabitants besides some detritus worms and other various microfauna. Tank maintainance consists of helping the shrimps by cleaning the algae off the glass every so often, trimming the plants, and topping up evaporation with RO water.",
+      "The aquarium is a 10-gallon tank equipped with only a sponge filter and lighting. The lights are on a timer which gradually turns on at around 9am and off 10 hours later. The substrate is Fluval Stratum, into which Monte Carlo is planted and intended to carpet the bottom of the tank over time. There is a mystery leafy plant in one corner of the tank. The hardscape consists of only one piece of driftwood which has weeping moss attached to it. The tank has no other inhabitants besides some detritus worms and other various microfauna. Tank maintenance consists of helping the shrimps by cleaning the algae off the glass every so often, trimming the plants, and topping up evaporation with RO water.",
     ],
   },
 ] as const;
@@ -77,7 +77,7 @@ export const LiveTankInfo = () => {
   const titleId = "shrimp-cam-description-title";
 
   return (
-    <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 1.25 }}>
+    <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
       <Button
         aria-controls={isOpen ? "shrimp-cam-description" : undefined}
         aria-expanded={isOpen}
@@ -113,7 +113,7 @@ export const LiveTankInfo = () => {
               width: { xs: "calc(100% - 24px)", sm: "calc(100% - 64px)" },
               height: {
                 xs: "calc(100dvh - 24px)",
-                sm: "min(680px, calc(100dvh - 64px))",
+                sm: "min(560px, calc(100dvh - 64px))",
               },
               maxHeight: { xs: "calc(100% - 24px)", sm: "calc(100% - 64px)" },
               m: { xs: 1.5, sm: 4 },
@@ -160,6 +160,7 @@ export const LiveTankInfo = () => {
           }}
         >
           <Typography
+            id={titleId}
             sx={{
               mb: 1.5,
               color: "primary.main",

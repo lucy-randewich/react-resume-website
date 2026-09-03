@@ -5,9 +5,16 @@ import { ShrimpSprite } from "../ShrimpTank/ShrimpSprite";
 import { TankBubbles } from "../ShrimpTank/TankBubbles";
 import "../ShrimpTank/ShrimpTank.css";
 
-export const LiveTankOfflineState = () => (
+interface LiveTankOfflineStateProps {
+  isChecking?: boolean;
+}
+
+export const LiveTankOfflineState = ({
+  isChecking = false,
+}: LiveTankOfflineStateProps) => (
   <Box
     className="tank-shell"
+    aria-live="polite"
     sx={{
       position: "absolute",
       inset: 0,
@@ -37,7 +44,7 @@ export const LiveTankOfflineState = () => (
           lineHeight: 1,
         }}
       >
-        Stream offline
+        {isChecking ? "Shrimp cam" : "Stream offline"}
       </Typography>
     </Box>
 
@@ -71,9 +78,19 @@ export const LiveTankOfflineState = () => (
           height: 6,
           bgcolor: colors.accent,
           borderRadius: "50%",
+          animation: isChecking
+            ? "statusPulse 1.6s ease-in-out infinite"
+            : "none",
+          "@keyframes statusPulse": {
+            "0%, 100%": { opacity: 0.45 },
+            "50%": { opacity: 1 },
+          },
+          "@media (prefers-reduced-motion: reduce)": {
+            animation: "none",
+          },
         }}
       />
-      Offline
+      {isChecking ? "Connecting" : "Offline"}
     </Box>
 
     <Box

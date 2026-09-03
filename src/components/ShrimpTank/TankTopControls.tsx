@@ -2,7 +2,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import LeaderboardOutlinedIcon from "@mui/icons-material/LeaderboardOutlined";
 import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
-import { alpha, IconButton } from "@mui/material";
+import { alpha, Box, IconButton } from "@mui/material";
 import { colors } from "../../theme";
 
 interface TankTopControlsProps {
@@ -12,14 +12,12 @@ interface TankTopControlsProps {
   onToggleAudio: () => void;
 }
 
-const controlSx = (right: number) => ({
-  position: "absolute",
-  zIndex: 3,
-  right,
-  top: 12,
+const controlSx = {
   color: colors.tank.ink,
+  width: { xs: 34, sm: 40 },
+  height: { xs: 34, sm: 40 },
   "&:hover": { bgcolor: alpha(colors.paper, 0.45) },
-});
+};
 
 export const TankTopControls = ({
   isMuted,
@@ -27,13 +25,23 @@ export const TankTopControls = ({
   onOpenLeaderboard,
   onToggleAudio,
 }: TankTopControlsProps) => (
-  <>
+  <Box
+    sx={{
+      position: "absolute",
+      zIndex: 5,
+      top: { xs: 8, sm: 12 },
+      right: { xs: 8, sm: 12 },
+      display: "flex",
+      alignItems: "center",
+      gap: { xs: 0, sm: 0.125 },
+    }}
+  >
     <IconButton
       className="tank-interface leaderboard-button"
       aria-label="Show leaderboard"
       title="Show leaderboard"
       onClick={onOpenLeaderboard}
-      sx={controlSx(94)}
+      sx={controlSx}
     >
       <LeaderboardOutlinedIcon />
     </IconButton>
@@ -41,7 +49,7 @@ export const TankTopControls = ({
       className="tank-interface sound-button"
       aria-label={isMuted ? "Unmute tank sounds" : "Mute tank sounds"}
       onClick={onToggleAudio}
-      sx={controlSx(53)}
+      sx={controlSx}
     >
       {isMuted ? <VolumeOffIcon /> : <VolumeUpIcon />}
     </IconButton>
@@ -49,9 +57,9 @@ export const TankTopControls = ({
       className="tank-interface close-button"
       aria-label="Close shrimp tank"
       onClick={onClose}
-      sx={controlSx(12)}
+      sx={controlSx}
     >
       <CloseIcon />
     </IconButton>
-  </>
+  </Box>
 );

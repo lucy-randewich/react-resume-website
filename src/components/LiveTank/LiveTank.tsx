@@ -1,7 +1,8 @@
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+import { useState } from "react";
 import { layout } from "../../theme";
 import { LiveTankInfo } from "./LiveTankInfo";
-import { LiveTankPlayer } from "./LiveTankPlayer";
+import { LiveTankPlayer, type LiveTankStatus } from "./LiveTankPlayer";
 
 const shrimpCamVideoId = "aWHxtpEWJeo";
 
@@ -10,6 +11,14 @@ interface LiveTankProps {
 }
 
 export const LiveTank = ({ id }: LiveTankProps) => {
+  const [status, setStatus] = useState<LiveTankStatus>("checking");
+  const statusLabel =
+    status === "live"
+      ? "Live now"
+      : status === "offline"
+        ? "Offline"
+        : "Connecting";
+
   return (
     <section id={id}>
       <Box
@@ -24,8 +33,55 @@ export const LiveTank = ({ id }: LiveTankProps) => {
         }}
       >
         <Box>
-          <LiveTankPlayer videoId={shrimpCamVideoId} />
-          <LiveTankInfo />
+          <LiveTankPlayer
+            videoId={shrimpCamVideoId}
+            onStatusChange={setStatus}
+          />
+          <Box
+            sx={{
+              mt: 1.25,
+              px: 0.5,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 2,
+            }}
+          >
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1.1 }}>
+              <Typography
+                component="h1"
+                sx={{ fontSize: ".86rem", fontWeight: 700, lineHeight: 1.4 }}
+              >
+                Shrimp cam
+              </Typography>
+              <Box
+                sx={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 0.6,
+                  color: "text.secondary",
+                  fontSize: ".7rem",
+                }}
+              >
+                <Box
+                  component="span"
+                  sx={{
+                    width: 6,
+                    height: 6,
+                    borderRadius: "50%",
+                    bgcolor:
+                      status === "live"
+                        ? "success.main"
+                        : status === "offline"
+                          ? "text.disabled"
+                          : "primary.main",
+                  }}
+                />
+                {statusLabel}
+              </Box>
+            </Box>
+            <LiveTankInfo />
+          </Box>
         </Box>
       </Box>
     </section>

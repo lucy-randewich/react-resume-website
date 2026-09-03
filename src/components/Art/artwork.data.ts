@@ -18,7 +18,7 @@ export const artworks: Artwork[] = [
     title: "Rovering",
     medium: "Oil on canvas",
     description:
-      "A portrait of our Defender 100. The reference photo was taken on a weekend trip in South Wales. The painting evokes memories of chilly morning coffees and laughs with friends around a campfire. ",
+      "A portrait of my partner's Defender 110. The reference photo was taken on a weekend trip in South Wales. It reminds me of chilly morning coffees and lols with friends around a campfire. ",
     image: landRover,
     alt: "A framed painting of a dark green Land Rover in a Welsh mountain landscape",
     width: 1448,

@@ -12,7 +12,9 @@ interface TimelineProps {
 }
 
 export const Timeline = ({ id }: TimelineProps) => {
-  const [expandedRole, setExpandedRole] = useState<string | null>(null);
+  const [expandedRole, setExpandedRole] = useState<string | null>(
+    experienceEntries[0]?.title ?? null,
+  );
 
   return (
     <section id={id}>
@@ -25,7 +27,7 @@ export const Timeline = ({ id }: TimelineProps) => {
         }}
       >
         <Box sx={{ mb: { xs: 4, md: 5 } }}>
-          <SectionEyebrow>Experience</SectionEyebrow>
+          <SectionEyebrow>Some places I've worked</SectionEyebrow>
         </Box>
         <Box sx={{ borderTop: 1, borderColor: "divider" }}>
           {experienceEntries.map((entry) => (

@@ -92,6 +92,8 @@ export const ShrimpTank = ({
       slotProps={{
         paper: {
           sx: {
+            width: { xs: "calc(100% - 24px)", sm: "calc(100% - 64px)" },
+            m: { xs: 1.5, sm: 4 },
             overflow: "hidden",
             boxShadow: shadows.dialog,
           },
@@ -139,9 +141,9 @@ export const ShrimpTank = ({
               position: "absolute",
               zIndex: 2,
               top: 11,
-              left: 28,
+              left: { xs: 16, sm: 28 },
               color: colors.tank.ink,
-              fontSize: "2.6rem",
+              fontSize: { xs: "1.5rem", sm: "2.6rem" },
               letterSpacing: "-.05em",
               lineHeight: 1,
               m: 0,

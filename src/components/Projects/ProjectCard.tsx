@@ -1,24 +1,44 @@
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { shadows } from "../../theme";
 import type { Project } from "./projects.types";
 
 export const ProjectCard = ({ project }: { project: Project }) => (
   <Box
     sx={{
+      position: "relative",
       bgcolor: "background.paper",
+      color: "text.primary",
       border: 1,
       borderColor: "divider",
       display: "flex",
       flexDirection: { xs: "column", lg: "row" },
       minHeight: 310,
       transition: "transform .2s ease, box-shadow .2s ease",
-      "&:hover": {
+      "&:hover, &:has(.project-card-link:focus-visible)": {
         transform: "translateY(-4px)",
         boxShadow: shadows.card,
       },
+      "&:hover .project-link-label, &:has(.project-card-link:focus-visible) .project-link-label":
+        {
+          color: "primary.main",
+        },
+      "&:has(.project-card-link:focus-visible)": {
+        outline: "2px solid",
+        outlineColor: "primary.main",
+        outlineOffset: 3,
+      },
     }}
   >
+    <Box
+      component="a"
+      className="project-card-link"
+      href={project.link}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`${project.linkLabel}: ${project.title}`}
+      sx={{ position: "absolute", inset: 0, zIndex: 1 }}
+    />
     <Box
       component="img"
       src={project.image}
@@ -75,23 +95,24 @@ export const ProjectCard = ({ project }: { project: Project }) => (
       >
         {project.skills}
       </Typography>
-      <Button
-        component="a"
-        href={project.link}
-        target="_blank"
-        rel="noopener noreferrer"
-        endIcon={<ArrowOutwardIcon />}
+      <Box
+        component="span"
+        className="project-link-label"
         sx={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 0.6,
           color: "text.primary",
-          p: 0,
           mt: "auto",
           pt: 2.2,
           fontWeight: 700,
-          "&:hover": { color: "primary.main", bgcolor: "transparent" },
+          fontSize: ".875rem",
+          transition: "color .2s ease",
         }}
       >
         {project.linkLabel}
-      </Button>
+        <ArrowOutwardIcon sx={{ fontSize: "1.15rem" }} />
+      </Box>
     </Box>
   </Box>
 );

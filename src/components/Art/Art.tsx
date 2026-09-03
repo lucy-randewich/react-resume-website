@@ -39,7 +39,7 @@ export const Art = ({ id }: ArtProps) => {
               letterSpacing: "-.055em",
             }}
           >
-            Little Art Gallery
+            Mini Art Gallery
           </Typography>
           <Typography
             sx={{
@@ -50,7 +50,7 @@ export const Art = ({ id }: ArtProps) => {
               lineHeight: 1.7,
             }}
           >
-            Here's a small selection of my paintings. 
+            Here's a small selection of my paintings.
           </Typography>
         </Box>
         <Box

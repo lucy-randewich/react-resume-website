@@ -187,6 +187,7 @@ export const LiveTankPlayer = ({
           bgcolor: "#000",
           opacity: playerStatus === "live" ? 1 : 0,
           pointerEvents: playerStatus === "live" ? "auto" : "none",
+          transition: "opacity .35s ease",
           "& iframe": {
             display: "block",
             width: "100%",
@@ -232,7 +233,9 @@ export const LiveTankPlayer = ({
           )}
         </IconButton>
       )}
-      {playerStatus === "offline" && <LiveTankOfflineState />}
+      {playerStatus !== "live" && (
+        <LiveTankOfflineState isChecking={playerStatus === "checking"} />
+      )}
     </Box>
   );
 };
