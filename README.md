@@ -58,6 +58,16 @@ VITE_SUPABASE_PUBLISHABLE_KEY=
 Without those variables, the site still works and the leaderboard shows a
 graceful unavailable state.
 
+Leaderboard writes go through the `shrimp-score` Supabase Edge Function. The
+function uses Supabase's server-only service-role key; that key must never be
+added to a `VITE_` variable or committed to this repository. Apply the database
+migrations and deploy the function before publishing frontend changes:
+
+```bash
+npx supabase db push
+npx supabase functions deploy shrimp-score
+```
+
 ## Deployment
 
 `npm run deploy` builds the application and publishes `dist` with `gh-pages`. The production build copies `public/CNAME` into `dist/CNAME`.

@@ -4,6 +4,7 @@ interface LeaderboardScoreFormProps {
   score: number;
   name: string;
   isSaving: boolean;
+  isSubmissionReady: boolean;
   onNameChange: (name: string) => void;
   onSkip: () => void;
   onSubmit: (event: React.FormEvent) => void;
@@ -13,6 +14,7 @@ export const LeaderboardScoreForm = ({
   score,
   name,
   isSaving,
+  isSubmissionReady,
   onNameChange,
   onSkip,
   onSubmit,
@@ -100,7 +102,7 @@ export const LeaderboardScoreForm = ({
           fullWidth
           type="submit"
           variant="contained"
-          disabled={!name.trim() || isSaving}
+          disabled={!name.trim() || !isSubmissionReady || isSaving}
           sx={{
             mt: 1,
             py: 0.9,
@@ -110,7 +112,11 @@ export const LeaderboardScoreForm = ({
             "&:hover": { boxShadow: "none" },
           }}
         >
-          {isSaving ? "Saving..." : "Save score"}
+          {isSaving
+            ? "Saving..."
+            : isSubmissionReady
+              ? "Save score"
+              : "Score unavailable"}
         </Button>
       </Box>
     </Box>

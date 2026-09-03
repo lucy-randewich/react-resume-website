@@ -1,5 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { alpha, Box, Dialog, Typography } from "@mui/material";
+import {
+  isSupabaseConfigured,
+  startShrimpGameSession,
+} from "../../services/supabase";
 import { colors, shadows } from "../../theme";
 import { MOVEMENTS, shrimpAssets } from "./shrimp.constants";
 import { ShrimpControls } from "./ShrimpControls";
@@ -14,7 +18,7 @@ import "./ShrimpTank.css";
 
 interface ShrimpTankProps {
   isOpen: boolean;
-  onClose: (score: number) => void;
+  onClose: (score: number, gameSessionId: string | null) => void;
   onOpenLeaderboard: () => void;
 }
 
@@ -25,6 +29,7 @@ export const ShrimpTank = ({
 }: ShrimpTankProps) => {
   const tankRef = useRef<HTMLDivElement>(null);
   const [isFocusMode, setIsFocusMode] = useState(false);
+  const [gameSessionId, setGameSessionId] = useState<string | null>(null);
   const {
     isMuted,
     playCollection,
@@ -42,11 +47,27 @@ export const ShrimpTank = ({
     return () => window.clearTimeout(focusTimer);
   }, [isOpen, startAudio]);
 
+  useEffect(() => {
+    if (!isOpen || !isSupabaseConfigured) return;
+    let isCurrent = true;
+    void startShrimpGameSession()
+      .then((sessionId) => {
+        if (isCurrent) setGameSessionId(sessionId);
+      })
+      .catch(() => {
+        if (isCurrent) setGameSessionId(null);
+      });
+    return () => {
+      isCurrent = false;
+    };
+  }, [isOpen]);
+
   const closeTank = () => {
-    onClose(game.score);
+    onClose(game.score, gameSessionId);
     stopAudio();
     game.reset();
     setIsFocusMode(false);
+    setGameSessionId(null);
   };
 
   const moveShrimp = (xChange: number, yChange: number) => {

@@ -45,12 +45,33 @@ export const getWorldRecord = async () => {
   return leader?.score ?? 0;
 };
 
-export const submitLeaderboardScore = async (name: string, score: number) => {
+export const startShrimpGameSession = async (): Promise<string | null> => {
+  const supabase = await getSupabase();
+  if (!supabase) return null;
+  const { data, error } = await supabase.functions.invoke("shrimp-score", {
+    body: { action: "start" },
+  });
+  if (error) throw error;
+  if (!data || typeof data.sessionId !== "string") {
+    throw new Error("The game session could not be started");
+  }
+  return data.sessionId;
+};
+
+export const submitLeaderboardScore = async (
+  name: string,
+  score: number,
+  sessionId: string,
+) => {
   const supabase = await getSupabase();
   if (!supabase) return [];
-  const { error } = await supabase.rpc("submit_shrimp_leaderboard_score", {
-    player_name: name,
-    candidate_score: score,
+  const { error } = await supabase.functions.invoke("shrimp-score", {
+    body: {
+      action: "submit",
+      sessionId,
+      playerName: name,
+      score,
+    },
   });
   if (error) throw error;
   return getLeaderboard();

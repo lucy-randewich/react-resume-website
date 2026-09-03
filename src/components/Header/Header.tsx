@@ -21,6 +21,9 @@ interface HeaderProps {
 export const Header = ({ mode, onToggleMode }: HeaderProps) => {
   const [isTankOpen, setIsTankOpen] = useState(false);
   const [leaderboardScore, setLeaderboardScore] = useState<number | null>(null);
+  const [leaderboardSessionId, setLeaderboardSessionId] = useState<
+    string | null
+  >(null);
   const [leaderboardEntries, setLeaderboardEntries] = useState<
     LeaderboardEntry[] | null
   >(null);
@@ -298,16 +301,19 @@ export const Header = ({ mode, onToggleMode }: HeaderProps) => {
         onOpenLeaderboard={() => {
           preloadLeaderboard();
           setLeaderboardScore(0);
+          setLeaderboardSessionId(null);
         }}
-        onClose={(score) => {
+        onClose={(score, gameSessionId) => {
           setIsTankOpen(false);
           preloadLeaderboard();
           setLeaderboardScore(score);
+          setLeaderboardSessionId(gameSessionId);
         }}
       />
       {leaderboardScore !== null && (
         <ShrimpLeaderboard
           score={leaderboardScore}
+          gameSessionId={leaderboardSessionId}
           initialEntries={leaderboardEntries}
           initialHasError={hasLeaderboardError}
           onEntriesChange={setLeaderboardEntries}

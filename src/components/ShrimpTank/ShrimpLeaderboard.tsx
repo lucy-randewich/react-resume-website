@@ -19,6 +19,7 @@ import { LeaderboardScoreList } from "./LeaderboardScoreList";
 
 interface ShrimpLeaderboardProps {
   score: number;
+  gameSessionId: string | null;
   initialEntries: LeaderboardEntry[] | null;
   initialHasError: boolean;
   onEntriesChange: (entries: LeaderboardEntry[]) => void;
@@ -27,6 +28,7 @@ interface ShrimpLeaderboardProps {
 
 export const ShrimpLeaderboard = ({
   score,
+  gameSessionId,
   initialEntries,
   initialHasError,
   onEntriesChange,
@@ -71,12 +73,16 @@ export const ShrimpLeaderboard = ({
   const saveScore = async (event: React.FormEvent) => {
     event.preventDefault();
     const trimmedName = name.trim();
-    if (!trimmedName || isSaving) return;
+    if (!trimmedName || !gameSessionId || isSaving) return;
 
     setIsSaving(true);
     setHasLoadError(false);
     try {
-      const updatedEntries = await submitLeaderboardScore(trimmedName, score);
+      const updatedEntries = await submitLeaderboardScore(
+        trimmedName,
+        score,
+        gameSessionId,
+      );
       setLoadedEntries(updatedEntries);
       onEntriesChange(updatedEntries);
       setHasSubmitted(true);
@@ -152,6 +158,7 @@ export const ShrimpLeaderboard = ({
                 score={score}
                 name={name}
                 isSaving={isSaving}
+                isSubmissionReady={Boolean(gameSessionId)}
                 onNameChange={setName}
                 onSkip={() => setHasSkipped(true)}
                 onSubmit={saveScore}
