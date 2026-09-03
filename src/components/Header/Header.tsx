@@ -234,7 +234,7 @@ export const Header = ({ mode, onToggleMode }: HeaderProps) => {
                 </Button>
                 <Button
                   component={RouterLink}
-                  to="/shrimp-cam"
+                  to="/shrimp-cam/"
                   sx={{
                     justifyContent: "flex-start",
                     color: "text.primary",
