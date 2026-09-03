@@ -35,6 +35,8 @@ interface YouTubePlayer {
   destroy: () => void;
   getDuration: () => number;
   getVideoData: () => { isLive?: boolean };
+  mute: () => void;
+  playVideo: () => void;
 }
 
 interface LiveTankPlayerProps {
@@ -114,15 +116,19 @@ export const LiveTankPlayer = ({
         videoId,
         host: "https://www.youtube-nocookie.com",
         playerVars: {
+          autoplay: 1,
           controls: 0,
           disablekb: 1,
           fs: 0,
           iv_load_policy: 3,
+          mute: 1,
           playsinline: 1,
           rel: 0,
         },
         events: {
           onReady: (event) => {
+            event.target.mute();
+            event.target.playVideo();
             statusTimer = window.setTimeout(() => {
               const videoData = event.target.getVideoData();
               const isLive =

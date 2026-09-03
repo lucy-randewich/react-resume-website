@@ -1,7 +1,5 @@
-import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
 import { useState } from "react";
-import cv from "../../assets/documents/lucy-randewich-cv.pdf";
 import { layout } from "../../theme";
 import { SectionEyebrow } from "../shared";
 import { educationEntry, experienceEntries } from "./timeline.data";
@@ -52,17 +50,6 @@ export const Timeline = ({ id }: TimelineProps) => {
             }
           />
         </Box>
-
-        <Button
-          component="a"
-          href={cv}
-          target="_blank"
-          rel="noopener noreferrer"
-          endIcon={<ArrowOutwardIcon />}
-          sx={{ mt: 3, px: 0, color: "text.primary", fontWeight: 700 }}
-        >
-          View full CV
-        </Button>
       </Box>
     </section>
   );
