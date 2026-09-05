@@ -326,41 +326,91 @@ export const Header = ({ mode, onToggleMode }: HeaderProps) => {
               color="inherit"
               size="small"
               sx={(theme) => ({
+                position: "relative",
+                width: 34,
+                height: 34,
                 ml: { xs: 0.25, sm: 0.75 },
+                overflow: "hidden",
+                borderRadius: "50%",
                 transition:
-                  "background-color .25s ease, color .25s ease, transform .25s ease",
-                "& svg": {
-                  transition: "transform .35s ease",
-                  transformOrigin: "center",
+                  "color .25s ease, transform .2s ease, background-color .25s ease",
+                "&::before": {
+                  content: '""',
+                  position: "absolute",
+                  inset: 4,
+                  borderRadius: "50%",
+                  bgcolor: alpha(theme.palette.primary.main, 0.12),
+                  opacity: 0,
+                  transform: "scale(.55)",
+                  transition:
+                    "opacity .25s ease, transform .35s cubic-bezier(.2,.8,.2,1)",
                 },
-                "&:hover, &:focus-visible": {
-                  bgcolor: alpha(theme.palette.primary.main, 0.1),
-                  color: "primary.main",
-                  transform: "translateY(-1px)",
+                "& .theme-icon-stack": {
+                  position: "relative",
+                  width: 20,
+                  height: 20,
+                  transition: "transform .35s cubic-bezier(.2,.8,.2,1)",
                 },
-                "&:hover svg, &:focus-visible svg": {
+                "& .theme-icon": {
+                  position: "absolute",
+                  inset: 0,
+                  transition:
+                    "opacity .22s ease, transform .42s cubic-bezier(.2,.8,.2,1)",
+                },
+                "& .theme-icon--moon": {
+                  opacity: mode === "light" ? 1 : 0,
                   transform:
                     mode === "light"
-                      ? "rotate(-18deg) scale(1.08)"
-                      : "rotate(24deg) scale(1.08)",
+                      ? "rotate(0deg) scale(1)"
+                      : "rotate(70deg) scale(.45)",
+                },
+                "& .theme-icon--sun": {
+                  opacity: mode === "dark" ? 1 : 0,
+                  transform:
+                    mode === "dark"
+                      ? "rotate(0deg) scale(1)"
+                      : "rotate(-70deg) scale(.45)",
+                },
+                "&:hover, &:focus-visible": {
+                  color: "primary.main",
+                  bgcolor: "transparent",
+                },
+                "&:hover::before, &:focus-visible::before": {
+                  opacity: 1,
+                  transform: "scale(1)",
+                },
+                "&:hover .theme-icon-stack, &:focus-visible .theme-icon-stack":
+                  {
+                    transform:
+                      mode === "light"
+                        ? "translateY(-1px) rotate(-8deg) scale(1.04)"
+                        : "translateY(-1px) rotate(12deg) scale(1.04)",
+                  },
+                "&:active .theme-icon-stack": {
+                  transform: "scale(.88)",
                 },
                 "@media (prefers-reduced-motion: reduce)": {
                   transition: "none",
-                  "& svg": { transition: "none" },
-                  "&:hover, &:focus-visible": {
-                    transform: "none",
+                  "&::before, & .theme-icon, & .theme-icon-stack": {
+                    transition: "none",
                   },
-                  "&:hover svg, &:focus-visible svg": {
-                    transform: "none",
-                  },
+                  "&:hover .theme-icon-stack, &:focus-visible .theme-icon-stack, &:active .theme-icon-stack":
+                    {
+                      transform: "none",
+                    },
                 },
               })}
             >
-              {mode === "light" ? (
-                <DarkModeOutlinedIcon fontSize="small" />
-              ) : (
-                <LightModeOutlinedIcon fontSize="small" />
-              )}
+              <Box className="theme-icon-stack" aria-hidden="true">
+                <DarkModeOutlinedIcon
+                  className="theme-icon theme-icon--moon"
+                  fontSize="small"
+                />
+                <LightModeOutlinedIcon
+                  className="theme-icon theme-icon--sun"
+                  fontSize="small"
+                />
+              </Box>
             </IconButton>
           </Box>
         </Toolbar>

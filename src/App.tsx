@@ -1,6 +1,6 @@
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import type { PaletteMode } from "@mui/material";
-import { useLayoutEffect, useMemo, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 
 import About from "./components/About";
@@ -36,19 +36,44 @@ const ScrollToTop = () => {
   return null;
 };
 
-const getInitialMode = (): PaletteMode => {
+const getSavedMode = (): PaletteMode | null => {
   const savedMode = localStorage.getItem("colour-mode");
   if (savedMode === "light" || savedMode === "dark") return savedMode;
+
+  return null;
+};
+
+const getSystemMode = (): PaletteMode => {
   return window.matchMedia("(prefers-color-scheme: dark)").matches
     ? "dark"
     : "light";
 };
 
+const getInitialMode = (): PaletteMode => getSavedMode() ?? getSystemMode();
+
 const App = () => {
   const [mode, setMode] = useState<PaletteMode>(getInitialMode);
+  const [hasChosenMode, setHasChosenMode] = useState(
+    () => getSavedMode() !== null,
+  );
   const theme = useMemo(() => createAppTheme(mode), [mode]);
 
+  useEffect(() => {
+    if (hasChosenMode) return;
+
+    const systemPreference = window.matchMedia("(prefers-color-scheme: dark)");
+    const followSystemPreference = (event: MediaQueryListEvent) => {
+      setMode(event.matches ? "dark" : "light");
+    };
+
+    systemPreference.addEventListener("change", followSystemPreference);
+    return () => {
+      systemPreference.removeEventListener("change", followSystemPreference);
+    };
+  }, [hasChosenMode]);
+
   const toggleMode = () => {
+    setHasChosenMode(true);
     setMode((currentMode) => {
       const nextMode = currentMode === "light" ? "dark" : "light";
       localStorage.setItem("colour-mode", nextMode);
